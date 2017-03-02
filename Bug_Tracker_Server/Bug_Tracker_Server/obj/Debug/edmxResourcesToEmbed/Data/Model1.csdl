@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="bug_trackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="bug">
+    <Key>
+      <PropertyRef Name="bug_id" />
+    </Key>
+    <Property Name="bug_id" Type="Int32" Nullable="false" />
+    <Property Name="bug_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="bug_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="bug_description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="bug_project_id" Type="Int32" Nullable="false" />
+    <Property Name="bug_file" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="bug_method" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="bug_line" Type="Int32" Nullable="false" />
+    <Property Name="bug_priority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="bug_severity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="bug_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="bug_tester_id" Type="Int32" Nullable="false" />
+    <Property Name="bug_developer_id" Type="Int32" />
+    <Property Name="bug_reject_reason" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="bug_screenshot" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="bug_date" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="user" Relationship="Self.FK_bugs_developer_id" FromRole="bugs" ToRole="users" />
+  </EntityType>
+  <EntityType Name="project_team">
+    <Key>
+      <PropertyRef Name="team_sl_no" />
+    </Key>
+    <Property Name="team_sl_no" Type="Int32" Nullable="false" />
+    <Property Name="team_project_id" Type="Int32" Nullable="false" />
+    <Property Name="team_user_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="user" Relationship="Self.FK_project_team_user_id" FromRole="project_team" ToRole="users" />
+  </EntityType>
+  <EntityType Name="project">
+    <Key>
+      <PropertyRef Name="project_id" />
+    </Key>
+    <Property Name="project_id" Type="Int32" Nullable="false" />
+    <Property Name="project_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="project_manager_id" Type="Int32" Nullable="false" />
+    <Property Name="project_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="user" Relationship="Self.FK_projects_manager_id" FromRole="projects" ToRole="users" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="user_employee_id" Type="Int32" Nullable="false" />
+    <Property Name="user_password" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="user_class" Type="Int32" Nullable="false" />
+    <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="user_email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="user_flag" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="bugs" Relationship="Self.FK_bugs_developer_id" FromRole="users" ToRole="bugs" />
+    <NavigationProperty Name="project_team" Relationship="Self.FK_project_team_user_id" FromRole="users" ToRole="project_team" />
+    <NavigationProperty Name="projects" Relationship="Self.FK_projects_manager_id" FromRole="users" ToRole="projects" />
+  </EntityType>
+  <Association Name="FK_bugs_developer_id">
+    <End Role="users" Type="Self.user" Multiplicity="0..1" />
+    <End Role="bugs" Type="Self.bug" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="bugs">
+        <PropertyRef Name="bug_developer_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_project_team_user_id">
+    <End Role="users" Type="Self.user" Multiplicity="1" />
+    <End Role="project_team" Type="Self.project_team" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="project_team">
+        <PropertyRef Name="team_user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_projects_manager_id">
+    <End Role="users" Type="Self.user" Multiplicity="1" />
+    <End Role="projects" Type="Self.project" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="projects">
+        <PropertyRef Name="project_manager_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="bug_trackerEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="bugs" EntityType="Self.bug" />
+    <EntitySet Name="project_team" EntityType="Self.project_team" />
+    <EntitySet Name="projects" EntityType="Self.project" />
+    <EntitySet Name="users" EntityType="Self.user" />
+    <AssociationSet Name="FK_bugs_developer_id" Association="Self.FK_bugs_developer_id">
+      <End Role="users" EntitySet="users" />
+      <End Role="bugs" EntitySet="bugs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_project_team_user_id" Association="Self.FK_project_team_user_id">
+      <End Role="users" EntitySet="users" />
+      <End Role="project_team" EntitySet="project_team" />
+    </AssociationSet>
+    <AssociationSet Name="FK_projects_manager_id" Association="Self.FK_projects_manager_id">
+      <End Role="users" EntitySet="users" />
+      <End Role="projects" EntitySet="projects" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
