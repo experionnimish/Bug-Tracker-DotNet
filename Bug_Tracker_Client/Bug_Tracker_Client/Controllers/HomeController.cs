@@ -18,7 +18,11 @@ namespace Bug_Tracker_Client.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> Login(UserDto loginUser)
+        public ActionResult About()
+        {
+            return View();
+        }
+        public async Task<ActionResult> Login(UserDto loginUser)
         {
             HttpClient client = new HttpClient();
             var param = Newtonsoft.Json.JsonConvert.SerializeObject(loginUser);
@@ -32,11 +36,12 @@ namespace Bug_Tracker_Client.Controllers
             myObject = JsonConvert.DeserializeObject<UserDto>(responses);
             if (myObject != null)
             {
-                return Json(new { empId = myObject.user_employee_id, name = myObject.user_name });
+                return View("About");
             }
             else
             {
-                return Json(new { status = 403, message = "No user found" });
+                ViewBag.LoginError = "Incorrect username or password!";
+                return View("Index");
             }
         }
     }

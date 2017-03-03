@@ -13,7 +13,7 @@ namespace Bug_Tracker_Server.Data_Services
         bug_trackerEntities entites = new bug_trackerEntities();
         public UserDto Login(user userObj)
         {
-            var query = entites.users.Where(x => x.user_employee_id.Equals(userObj.user_employee_id)).FirstOrDefault();
+            var query = entites.users.Where(x => x.user_employee_id.Equals(userObj.user_employee_id) && x.user_password.Equals(userObj.user_password)).FirstOrDefault();
             if (query != null)
             {
                 var userLoggedIn = UserEntityDto.ToDto(query);
