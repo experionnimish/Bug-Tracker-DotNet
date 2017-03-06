@@ -14,15 +14,11 @@ namespace Bug_Tracker_Client.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Login()
         {
             return View();
         }
-        public ActionResult About()
-        {
-            return View();
-        }
-        public async Task<ActionResult> Login(UserDto loginUser)
+        public async Task<ActionResult> Authenticate(UserDto loginUser)
         {
             HttpClient client = new HttpClient();
             var param = Newtonsoft.Json.JsonConvert.SerializeObject(loginUser);
@@ -36,13 +32,22 @@ namespace Bug_Tracker_Client.Controllers
             myObject = JsonConvert.DeserializeObject<UserDto>(responses);
             if (myObject != null)
             {
-                return View("About");
+                Session["User"] = new UserDto();
+                Session["User"] = myObject;
+                return View("Home");
             }
             else
             {
                 ViewBag.LoginError = "Incorrect username or password!";
                 return View("Index");
             }
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Remove("User");
+            Console.Write(Session["User"]);
+            return View("Login");
         }
     }
 }

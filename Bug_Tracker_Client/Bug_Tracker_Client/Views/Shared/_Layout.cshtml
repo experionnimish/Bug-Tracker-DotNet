@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using BugTrackerDTOs
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -7,34 +8,102 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    @{
+        var user = Session["User"] as UserDto;
+    }
+    <link href="~/Content/NavBar.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Bug Tracker", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
+                @{
+                    if (user != null)
+                    {
+                        if (user.user_class == 0)
+                        {
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicons glyphicons-bug" aria-hidden="true"></i>&nbsp&nbspBug Report&nbsp<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li>@Html.ActionLink("Overview", "Overview", "Admin")</li>
+                                        <li>@Html.ActionLink("Unassigned", "UnassignedBugs", "Admin")</li>
+                                        <li>@Html.ActionLink("Assigned", "AssignedBugs", "Admin")</li>
+                                        <li>@Html.ActionLink("Closed", "ClosedBugs", "Admin")</li>
+                                    </ul>
+                                </li>
+
+                                <li><a href="/Admin/ApproveBugs"><i class="glyphicons glyphicons-thumbs-o-up" aria-hidden="true"></i>&nbsp&nbspApprove Resolved Bugs<span class="sr-only">(current)</span></a></li>
+
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicons glyphicons-users" aria-hidden="true"></i>&nbsp&nbspManage Project Team&nbsp<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li>@Html.ActionLink("Manage Testers", "ManageTesters", "Admin")</li>
+                                        <li>@Html.ActionLink("Manage Developers", "ManageDevelopers", "Admin")</li>
+                                    </ul>
+                                </li>
+
+                                <li><a href="/Admin/ManageProjects"><i class="glyphicons glyphicons-folder-open-o" aria-hidden="true"></i>&nbsp&nbspManage Projects</a></li>
+
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicons glyphicons-user-plus" aria-hidden="true"></i>&nbsp&nbspManage Users&nbsp<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li>@Html.ActionLink("Add Users", "AddUsers", "Admin")</li>
+                                        <li>@Html.ActionLink("Remove Users", "RemoveUsers", "Admin")</li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        }
+                        if (user.user_class == 1)
+                        {
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Report Bugs", "Index", "Home")</li>
+                                <li>@Html.ActionLink("Review Bugs", "About", "Home")</li>
+                                <li>@Html.ActionLink("Track Bugs", "Contact", "Home")</li>
+                            </ul>
+                        }
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#">Welcome, @user.user_name</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Logout<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/Home/Logout">Logout&nbsp<i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">Employee ID : @user.user_employee_id</a></li>
+                                    @{
+                                        if (user.user_class == 0)
+                                        {
+                                            <li><a href="#">Class : Admin </a></li>
+                                        }
+                                        else if (user.user_class == 1)
+                                        {
+                                            <li><a href="#">Class : Tester </a></li>
+                                        }
+                                        else if (user.user_class == 2)
+                                        {
+                                            <li><a href="#">Class : Developer </a></li>
+                                        }
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+                    }
+                }
+                @*@Html.Partial("_LoginPartial")*@
             </div>
         </div>
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

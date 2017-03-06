@@ -1,0 +1,95 @@
+﻿body {
+  background: url(/Content/apple_desktop-wallpaper-1920x1080.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    background-color: rgba(10, 11, 15, 0.5);
+    color: white;  /*Sets the text hover color on navbar*/
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >
+ a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: white; /*BACKGROUND color for active*/
+    background-color: rgba(10, 11, 15, 0.5);
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+  color: white;
+  background-color: rgba(10, 11, 15, 0.5);
+}
+
+.navbar-default {
+    background-color: rgba(10, 11, 15, 0.5);
+    border-color: transparent;
+}
+
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    color: white;
+    text-decoration: none;
+    background-color: #66CCFF;  /*change color of links in drop down here*/
+}
+
+.caret {
+    border-top-color: white !important;
+    border-bottom-color: white !important;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+    text-decoration: none;
+    background-color: #2d6a9f; /*Change rollover cell color here*/
+}
+
+
+.navbar-default .navbar-nav > li > a {
+   color: white; /*Change active text color here*/
+}
+
+.navbar-default .navbar-brand{
+  color: white;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: white; /* Changes regular toggle color */
+}
+
+.navbar-nav>li>.dropdown-menu {
+  background-color: white;
+  /*color: white;*/
+}
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu>li>a {
+    color: white;
+  }
+}
+
+.panel-primary{
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.panel-primary .panel-heading{
+  color: white;
+  background-color: rgba(10, 11, 15, 0.5);
+  border-color: transparent;
+}
+
+.panel-primary .panel-body{
+  background-color: white;
+  opacity: 0.9;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+table{
+  background-color: white;
+  border-color: rgba(10, 11, 15, 0.5);
+  opacity: 0.9;
+}
