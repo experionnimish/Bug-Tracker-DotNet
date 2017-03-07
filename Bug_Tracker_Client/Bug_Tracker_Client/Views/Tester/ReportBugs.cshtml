@@ -157,19 +157,22 @@
                             </div>
                             <div class="col-sm-6 form-group">
                                 <label>File</label>
-                                <input type="text" name="file" placeholder="File Name" class="form-control" required>
+                                @*<input type="text" name="file" placeholder="File Name" class="form-control" required>*@
+                                @Html.TextBoxFor(m => m.bug_file, new { @name = "file", @id = "file", @placeholder = "File Name", @class="form-control", @required="required"})
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-3 form-group">
                                 <label>Method</label>
-                                <input type="text" name="method" placeholder="Method" class="form-control" required>
+                                @*<input type="text" name="method" placeholder="Method" class="form-control" required>*@
+                                @Html.TextBoxFor(m => m.bug_method, new { @name = "method", @id = "method", @placeholder = "Method", @class = "form-control", @required = "required" })
                                 <div class="help-block with-errors"></div>
                             </div>
                             <div class="col-sm-3 form-group">
                                 <label>Line</label>
-                                <input type="number" name="line" placeholder="Line" class="form-control" required>
+                                @*<input type="number" name="line" placeholder="Line" class="form-control" required>*@
+                                @Html.TextBoxFor(m => m.bug_line, new { @type = "number", @name = "line", @id = "line", @placeholder = "Line", @class = "form-control", @required = "required" })
                                 <div class="help-block with-errors"></div>
                             </div>
                             <div class="col-sm-6 form-group">
