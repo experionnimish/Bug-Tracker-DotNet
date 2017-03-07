@@ -12,6 +12,8 @@
         var user = Session["User"] as UserDto;
     }
     <link href="~/Content/NavBar.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/validator.js"></script>
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -32,7 +34,7 @@
                         {
                             <ul class="nav navbar-nav">
                                 <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicons glyphicons-bug" aria-hidden="true"></i>&nbsp&nbspBug Report&nbsp<span class="caret"></span></a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicons glyphicons-bug"></i>&nbsp&nbspBug Report&nbsp<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <li>@Html.ActionLink("Overview", "Overview", "Admin")</li>
                                         <li>@Html.ActionLink("Unassigned", "UnassignedBugs", "Admin")</li>
@@ -66,9 +68,18 @@
                         if (user.user_class == 1)
                         {
                             <ul class="nav navbar-nav">
-                                <li>@Html.ActionLink("Report Bugs", "Index", "Home")</li>
-                                <li>@Html.ActionLink("Review Bugs", "About", "Home")</li>
-                                <li>@Html.ActionLink("Track Bugs", "Contact", "Home")</li>
+                                <li>@Html.ActionLink("Tasks", "Tasks", "Tester")</li>
+                                <li>@Html.ActionLink("Report Bugs", "ReportBugs", "Tester")</li>
+                                <li>@Html.ActionLink("Review Bugs", "ReviewBugs", "Tester")</li>
+                                <li>@Html.ActionLink("Track Bugs", "TrackBugs", "Tester")</li>
+                            </ul>
+                        }
+                        if (user.user_class == 2)
+                        {
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Bug Reports", "BugReports", "Developer")</li>
+                                <li>@Html.ActionLink("Bug History", "BugHistory", "Developer")</li>
+                                <li>@Html.ActionLink("Rejected Bugs", "RejectedBugs", "Developer")</li>
                             </ul>
                         }
                         <ul class="nav navbar-nav navbar-right">

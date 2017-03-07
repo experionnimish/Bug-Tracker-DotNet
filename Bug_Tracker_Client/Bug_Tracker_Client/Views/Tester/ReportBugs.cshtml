@@ -1,0 +1,206 @@
+﻿@using BugTrackerDTOs
+@model BugTrackerDTOs.BugDto
+
+@{
+    ViewBag.Title = "ReportBugs";
+}
+
+<div class="panel panel-primary resp adduser_panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">Report Bug</h3>
+    </div>
+    <div class="panel-body">
+        <div class="col-lg-12">
+            <div class="row">
+                <form name="reportBugForm" id="reportBugForm" data-toggle="validator" method="post" action="Tester/ReportBugs" enctype="multipart/form-data">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-5 form-group">
+                                <label>Bug Name</label>
+                                @*<input type="text" name="bug_name" placeholder="Bug Name" class="form-control" data-minlength="5" maxlength="50" required>*@
+                                @Html.TextBoxFor(m => m.bug_name, new {@name= "bug_name", @id = "bug_name", @class = "form-control", @placeholder = "Bug Name", maxlength = "50", @required = "required" })
+                                <div class="help-block with-errors">Minimum length of 5</div>
+                                @*@Html.ValidationMessageFor(model => model.bug_name, "", new { @class = "text-danger" })*@
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label>Bug Type :</label>
+                                @*<select class="form-control" name="bug_type" required>
+                                    <option value="">Select Bug type</option>
+                                    <option value="Type A">Type A</option>
+                                    <option value="Type B">Type B</option>
+                                    <option value="Type C">Type C</option>
+                                </select>*@
+                                @{
+                                    List<SelectListItem> listItems = new List<SelectListItem>();
+                                    listItems.Add(new SelectListItem
+                                    {
+                                        Text = "Select Bug Type",
+                                        Value = "",
+                                        Selected = true
+                                    });
+                                    listItems.Add(new SelectListItem
+                                    {
+                                        Text = "Type A",
+                                        Value = "Type A"
+                                    });
+                                    listItems.Add(new SelectListItem
+                                    {
+                                        Text = "Type B",
+                                        Value = "Type B"
+                                    });
+                                    listItems.Add(new SelectListItem
+                                    {
+                                        Text = "Type C",
+                                        Value = "Type C"
+                                    });
+                                }
+
+                                @Html.DropDownListFor(m => m.bug_type, listItems, new { @class = "form-control", @id = "bug_type", @name = "bug_type", @required="required" })
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label>Project</label>   
+                                @{ 
+                                    List<SelectListItem> ProjectsTester = new List<SelectListItem>();
+                                    ProjectsTester.Add(new SelectListItem
+                                    {
+                                        Text = "Select Project",
+                                        Value = "",
+                                        Selected = true
+                                    });
+                                    foreach(var item in ViewBag.ProjectsTester)
+                                    {
+                                        ProjectsTester.Add(item);
+                                    }
+                                }
+                                @Html.DropDownListFor(m => m.bug_project_id, ProjectsTester, new { @class = "form-control", id = "bug_project_id", @name = "bug_project_id", @required = "required" })
+                                @*@Html.DropDownListFor(m => m.bug_project_id, new SelectList(ViewBag.ProjectsTester, "", "Select Project"))*@
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Bug Description</label>
+                            @*<textarea name="bug_description" placeholder="Bug description" rows="3" class="form-control" data-minlength="50" maxlength="500" required></textarea>*@
+                            @Html.TextAreaFor(m => m.bug_description, new { @name = "bug_description", @placeholder = "Bug description", @rows = "3", @class="form-control", @minlength="50", @maxlength="500", @required="required" })
+                            <div class="help-block with-errors">Minimum length of 50</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 form-group">
+                                <label>Severity</label>
+                                @*<select class="form-control" name="severity" required>
+                                    <option value="">Select severity</option>
+                                    <option value="Minor">Minor</option>
+                                    <option value="Major">Major</option>
+                                    <option value="Critical">Critical</option>
+                                </select>*@
+                                @{
+                                    List<SelectListItem> SeverityList = new List<SelectListItem>();
+                                    SeverityList.Add(new SelectListItem
+                                    {
+                                        Text = "Select Severity",
+                                        Value = "",
+                                        Selected = true
+                                    });
+                                    SeverityList.Add(new SelectListItem
+                                    {
+                                        Text = "Minor",
+                                        Value = "Minor"
+                                    });
+                                    SeverityList.Add(new SelectListItem
+                                    {
+                                        Text = "Major",
+                                        Value = "Major"
+                                    });
+                                    SeverityList.Add(new SelectListItem
+                                    {
+                                        Text = "Critical",
+                                        Value = "Critical"
+                                    });
+                                }
+                                @Html.DropDownListFor(m => m.bug_severity, SeverityList, new{ @class="form-control", @name="severity", @id="severity", @required="required" })
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label>Priority</label>
+                                @*<select class="form-control" name="priority" required>
+                                    <option value="">Select priority</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="High">High</option>
+                                </select>*@
+                                @{
+                                    List<SelectListItem> PriorityList = new List<SelectListItem>();
+                                    PriorityList.Add(new SelectListItem
+                                    {
+                                        Text = "Select Priority",
+                                        Value = "",
+                                        Selected = true
+                                    });
+                                    PriorityList.Add(new SelectListItem
+                                    {
+                                        Text = "Low",
+                                        Value = "Low"
+                                    });
+                                    PriorityList.Add(new SelectListItem
+                                    {
+                                        Text = "Moderate",
+                                        Value = "Moderate"
+                                    });
+                                    PriorityList.Add(new SelectListItem
+                                    {
+                                        Text = "High",
+                                        Value = "High"
+                                    });
+                                }
+                                @Html.DropDownListFor(m => m.bug_priority, PriorityList, new { @class = "form-control", @name = "priority", @id = "priority", @required = "required" })
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label>File</label>
+                                <input type="text" name="file" placeholder="File Name" class="form-control" required>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 form-group">
+                                <label>Method</label>
+                                <input type="text" name="method" placeholder="Method" class="form-control" required>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="col-sm-3 form-group">
+                                <label>Line</label>
+                                <input type="number" name="line" placeholder="Line" class="form-control" required>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label>Select Screenshot</label>
+                                <input type="file" name="screenshots" accept="image/*">
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <!-- <div class="col-sm-4 form-group">
+                                <label>Status</label>
+                                                        <select class="form-control" name="status" required>
+                                                         <option value="">Select status</option>
+                                                         <option value="Open">Open</option>
+                                                         <option value="Assigned">Assigned</option>
+                                                         <option value="Resolving">Resolving</option>
+                                                         <option value="Review">Review</option>
+                                                         <option value="Approval">Approval</option>
+                                                         <option value="Closed">Closed</option>
+                                                        </select>
+                                                        <div class="help-block with-errors"></div>
+                                </div> -->
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        console.log(ViewBag.ProjectsTester);
+    });
+</script>

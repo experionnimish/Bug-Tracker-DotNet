@@ -38,6 +38,13 @@ namespace Bug_Tracker_Client.Controllers
             else
                 return View("Login");
         }
+        public ActionResult ApproveBugs()
+        {
+            if (IsAuthenticated())
+                return View();
+            else
+                return View("Login");
+        }
         public ActionResult ManageTesters()
         {
             if (IsAuthenticated())
@@ -46,6 +53,13 @@ namespace Bug_Tracker_Client.Controllers
                 return View("Login");
         }
         public ActionResult ManageDevelopers()
+        {
+            if (IsAuthenticated())
+                return View();
+            else
+                return View("Login");
+        }
+        public ActionResult ManageProjects()
         {
             if (IsAuthenticated())
                 return View();

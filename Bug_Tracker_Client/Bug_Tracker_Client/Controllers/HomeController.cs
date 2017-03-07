@@ -34,12 +34,19 @@ namespace Bug_Tracker_Client.Controllers
             {
                 Session["User"] = new UserDto();
                 Session["User"] = myObject;
-                return View("Home");
+                if (myObject.user_class == 0)
+                    return RedirectToAction("Overview", "Admin");
+                else if (myObject.user_class == 1)
+                    return RedirectToAction("Tasks", "Tester");
+                else if (myObject.user_class == 2)
+                    return RedirectToAction("BugReports", "Developer");
+                else
+                    return View("Login");
             }
             else
             {
                 ViewBag.LoginError = "Incorrect username or password!";
-                return View("Index");
+                return View("Login");
             }
         }
 
