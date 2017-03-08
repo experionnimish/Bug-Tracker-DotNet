@@ -15,11 +15,12 @@ namespace Bug_Tracker_Server.Data_Services
         {
             try
             {
-                entities.bugs.Add(BugEntityDto.ToEntity(Bug));
+                var bug = BugEntityDto.ToEntity(Bug);
+                entities.bugs.Add(bug);
                 entities.SaveChanges();
                 return true;
             }
-            catch
+            catch(Exception e)
             {
                 return false;
             }

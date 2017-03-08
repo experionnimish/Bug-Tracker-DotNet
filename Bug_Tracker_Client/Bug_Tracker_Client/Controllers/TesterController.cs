@@ -80,6 +80,9 @@ namespace Bug_Tracker_Client.Controllers
         public async Task<ActionResult> ReportBug(BugDto Bug)
         {
             HttpClient client = new HttpClient();
+            UserDto user = (UserDto)Session["User"];
+            Bug.bug_tester_id = user.user_id;
+            Bug.bug_status = "Open";
             var param = Newtonsoft.Json.JsonConvert.SerializeObject(Bug);
             HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
             client.BaseAddress = new Uri("http://localhost:49380/api/");
@@ -96,6 +99,7 @@ namespace Bug_Tracker_Client.Controllers
             {
                 ViewBag.BugReportStatus = "Fail";
             }
+            GetProjects((UserDto)Session["User"]);
             return View("ReportBugs");
         }
     }

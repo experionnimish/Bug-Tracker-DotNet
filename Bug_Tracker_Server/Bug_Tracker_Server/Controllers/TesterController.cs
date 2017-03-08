@@ -16,12 +16,15 @@ namespace Bug_Tracker_Server.Controllers
         // GET: Tester
         IGetProjectsService IGetProjectsService;
         [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Tester/GetProjects")]
         public List<SelectListItem> GetProjects(user userObj)
         {
             IGetProjectsService = new GetProjectsService();
             return IGetProjectsService.GetProjects(userObj);
         }
         IReportBugService IReportBugService;
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Tester/ReportBug")]
         public bool ReportBug(BugDto Bug)
         {
             IReportBugService = new ReportBugService();
