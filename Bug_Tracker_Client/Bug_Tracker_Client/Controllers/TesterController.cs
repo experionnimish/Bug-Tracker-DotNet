@@ -79,28 +79,38 @@ namespace Bug_Tracker_Client.Controllers
         }
         public async Task<ActionResult> ReportBug(BugDto Bug)
         {
-            HttpClient client = new HttpClient();
-            UserDto user = (UserDto)Session["User"];
-            Bug.bug_tester_id = user.user_id;
-            Bug.bug_status = "Open";
-            var param = Newtonsoft.Json.JsonConvert.SerializeObject(Bug);
-            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
-            client.BaseAddress = new Uri("http://localhost:49380/api/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var response = client.PostAsync(string.Format("Tester/ReportBug"), contentPost).Result;
-            var responses = await response.Content.ReadAsStringAsync();
-            bool result = JsonConvert.DeserializeObject<bool>(responses);
-            if (result == true)
+            if(ModelState.IsValid)
             {
-                ViewBag.BugReportStatus = "Success";
+                HttpClient client = new HttpClient();
+                UserDto user = (UserDto)Session["User"];
+                Bug.bug_tester_id = user.user_id;
+                Bug.bug_status = "Open";
+                Bug.bug_date = DateTime.Now;
+                var param = Newtonsoft.Json.JsonConvert.SerializeObject(Bug);
+                HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+                client.BaseAddress = new Uri("http://localhost:49380/api/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = client.PostAsync(string.Format("Tester/ReportBug"), contentPost).Result;
+                var responses = await response.Content.ReadAsStringAsync();
+                bool result = JsonConvert.DeserializeObject<bool>(responses);
+                if (result == true)
+                {
+                    ViewBag.BugReportStatus = "Success";
+                }
+                else
+                {
+                    ViewBag.BugReportStatus = "Fail";
+                }
+                GetProjects((UserDto)Session["User"]);
+                return View("ReportBugs");
             }
             else
             {
                 ViewBag.BugReportStatus = "Fail";
+                GetProjects((UserDto)Session["User"]);
+                return View("ReportBugs");
             }
-            GetProjects((UserDto)Session["User"]);
-            return View("ReportBugs");
         }
     }
 }

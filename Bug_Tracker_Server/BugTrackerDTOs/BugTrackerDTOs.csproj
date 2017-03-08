@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BugDto.cs" />
+    <Compile Include="BugReportDto.cs" />
     <Compile Include="ProjectDto.cs" />
     <Compile Include="ProjectTeamDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
