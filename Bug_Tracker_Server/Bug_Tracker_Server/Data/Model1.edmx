@@ -24,7 +24,7 @@
           <Property Name="bug_developer_id" Type="int" />
           <Property Name="bug_reject_reason" Type="varchar" MaxLength="200" />
           <Property Name="bug_screenshot" Type="varchar" MaxLength="500" />
-          <Property Name="bug_date" Type="date" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="bug_date" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="project_team">
           <Key>
@@ -113,37 +113,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="bug_trackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="bug">
-          <Key>
-            <PropertyRef Name="bug_id" />
-          </Key>
-          <Property Name="bug_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="bug_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="bug_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="bug_description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="bug_project_id" Type="Int32" Nullable="false" />
-          <Property Name="bug_file" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="bug_method" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="bug_line" Type="Int32" Nullable="false" />
-          <Property Name="bug_priority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="bug_severity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="bug_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="bug_tester_id" Type="Int32" Nullable="false" />
-          <Property Name="bug_developer_id" Type="Int32" />
-          <Property Name="bug_reject_reason" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="bug_screenshot" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="bug_date" Type="Binary" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="user" Relationship="Self.FK_bugs_developer_id" FromRole="bugs" ToRole="users" />
-        </EntityType>
-        <EntityType Name="project_team">
-          <Key>
-            <PropertyRef Name="team_sl_no" />
-          </Key>
-          <Property Name="team_sl_no" Type="Int32" Nullable="false" />
-          <Property Name="team_project_id" Type="Int32" Nullable="false" />
-          <Property Name="team_user_id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="user" Relationship="Self.FK_project_team_user_id" FromRole="project_team" ToRole="users" />
-        </EntityType>
         <EntityType Name="project">
           <Key>
             <PropertyRef Name="project_id" />
@@ -152,40 +121,89 @@
           <Property Name="project_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="project_manager_id" Type="Int32" Nullable="false" />
           <Property Name="project_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="user" Relationship="Self.FK_projects_manager_id" FromRole="projects" ToRole="users" />
+          <NavigationProperty Name="user" Relationship="bug_trackerModel.FK_projects_manager_id" FromRole="project" ToRole="user" />
+        </EntityType>
+        <EntityContainer Name="bug_trackerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="projects" EntityType="Self.project" />
+          <EntitySet Name="bugs" EntityType="bug_trackerModel.bug" />
+          <EntitySet Name="project_team" EntityType="bug_trackerModel.project_team" />
+          <EntitySet Name="users" EntityType="bug_trackerModel.user" />
+          <AssociationSet Name="FK_bugs_developer_id" Association="bug_trackerModel.FK_bugs_developer_id">
+            <End Role="user" EntitySet="users" />
+            <End Role="bug" EntitySet="bugs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_project_team_user_id" Association="bug_trackerModel.FK_project_team_user_id">
+            <End Role="user" EntitySet="users" />
+            <End Role="project_team" EntitySet="project_team" />
+          </AssociationSet>
+          <AssociationSet Name="FK_projects_manager_id" Association="bug_trackerModel.FK_projects_manager_id">
+            <End Role="user" EntitySet="users" />
+            <End Role="project" EntitySet="projects" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="bug">
+          <Key>
+            <PropertyRef Name="bug_id" />
+          </Key>
+          <Property Name="bug_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="bug_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="bug_type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="bug_description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="bug_project_id" Type="Int32" Nullable="false" />
+          <Property Name="bug_file" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="bug_method" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="bug_line" Type="Int32" Nullable="false" />
+          <Property Name="bug_priority" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="bug_severity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="bug_status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="bug_tester_id" Type="Int32" Nullable="false" />
+          <Property Name="bug_developer_id" Type="Int32" />
+          <Property Name="bug_reject_reason" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="bug_screenshot" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="bug_date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="user" Relationship="bug_trackerModel.FK_bugs_developer_id" FromRole="bug" ToRole="user" />
+        </EntityType>
+        <EntityType Name="project_team">
+          <Key>
+            <PropertyRef Name="team_sl_no" />
+          </Key>
+          <Property Name="team_sl_no" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="team_project_id" Type="Int32" Nullable="false" />
+          <Property Name="team_user_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="bug_trackerModel.FK_project_team_user_id" FromRole="project_team" ToRole="user" />
         </EntityType>
         <EntityType Name="user">
           <Key>
             <PropertyRef Name="user_id" />
           </Key>
-          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="user_employee_id" Type="Int32" Nullable="false" />
-          <Property Name="user_password" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="user_password" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="user_class" Type="Int32" Nullable="false" />
-          <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="user_email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="user_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="user_email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="user_flag" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="bugs" Relationship="Self.FK_bugs_developer_id" FromRole="users" ToRole="bugs" />
-          <NavigationProperty Name="project_team" Relationship="Self.FK_project_team_user_id" FromRole="users" ToRole="project_team" />
-          <NavigationProperty Name="projects" Relationship="Self.FK_projects_manager_id" FromRole="users" ToRole="projects" />
+          <NavigationProperty Name="bugs" Relationship="bug_trackerModel.FK_bugs_developer_id" FromRole="user" ToRole="bug" />
+          <NavigationProperty Name="project_team" Relationship="bug_trackerModel.FK_project_team_user_id" FromRole="user" ToRole="project_team" />
+          <NavigationProperty Name="projects" Relationship="bug_trackerModel.FK_projects_manager_id" FromRole="user" ToRole="project" />
         </EntityType>
         <Association Name="FK_bugs_developer_id">
-          <End Role="users" Type="Self.user" Multiplicity="0..1" />
-          <End Role="bugs" Type="Self.bug" Multiplicity="*" />
+          <End Type="bug_trackerModel.user" Role="user" Multiplicity="0..1" />
+          <End Type="bug_trackerModel.bug" Role="bug" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="users">
+            <Principal Role="user">
               <PropertyRef Name="user_id" />
             </Principal>
-            <Dependent Role="bugs">
+            <Dependent Role="bug">
               <PropertyRef Name="bug_developer_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_project_team_user_id">
-          <End Role="users" Type="Self.user" Multiplicity="1" />
-          <End Role="project_team" Type="Self.project_team" Multiplicity="*" />
+          <End Type="bug_trackerModel.user" Role="user" Multiplicity="1" />
+          <End Type="bug_trackerModel.project_team" Role="project_team" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="users">
+            <Principal Role="user">
               <PropertyRef Name="user_id" />
             </Principal>
             <Dependent Role="project_team">
@@ -194,72 +212,23 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_projects_manager_id">
-          <End Role="users" Type="Self.user" Multiplicity="1" />
-          <End Role="projects" Type="Self.project" Multiplicity="*" />
+          <End Type="bug_trackerModel.user" Role="user" Multiplicity="1" />
+          <End Type="bug_trackerModel.project" Role="project" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="users">
+            <Principal Role="user">
               <PropertyRef Name="user_id" />
             </Principal>
-            <Dependent Role="projects">
+            <Dependent Role="project">
               <PropertyRef Name="project_manager_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="bug_trackerEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="bugs" EntityType="Self.bug" />
-          <EntitySet Name="project_team" EntityType="Self.project_team" />
-          <EntitySet Name="projects" EntityType="Self.project" />
-          <EntitySet Name="users" EntityType="Self.user" />
-          <AssociationSet Name="FK_bugs_developer_id" Association="Self.FK_bugs_developer_id">
-            <End Role="users" EntitySet="users" />
-            <End Role="bugs" EntitySet="bugs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_project_team_user_id" Association="Self.FK_project_team_user_id">
-            <End Role="users" EntitySet="users" />
-            <End Role="project_team" EntitySet="project_team" />
-          </AssociationSet>
-          <AssociationSet Name="FK_projects_manager_id" Association="Self.FK_projects_manager_id">
-            <End Role="users" EntitySet="users" />
-            <End Role="projects" EntitySet="projects" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="bug_trackerModelStoreContainer" CdmEntityContainer="bug_trackerEntities">
-          <EntitySetMapping Name="bugs">
-            <EntityTypeMapping TypeName="bug_trackerModel.bug">
-              <MappingFragment StoreEntitySet="bugs">
-                <ScalarProperty Name="bug_id" ColumnName="bug_id" />
-                <ScalarProperty Name="bug_name" ColumnName="bug_name" />
-                <ScalarProperty Name="bug_type" ColumnName="bug_type" />
-                <ScalarProperty Name="bug_description" ColumnName="bug_description" />
-                <ScalarProperty Name="bug_project_id" ColumnName="bug_project_id" />
-                <ScalarProperty Name="bug_file" ColumnName="bug_file" />
-                <ScalarProperty Name="bug_method" ColumnName="bug_method" />
-                <ScalarProperty Name="bug_line" ColumnName="bug_line" />
-                <ScalarProperty Name="bug_priority" ColumnName="bug_priority" />
-                <ScalarProperty Name="bug_severity" ColumnName="bug_severity" />
-                <ScalarProperty Name="bug_status" ColumnName="bug_status" />
-                <ScalarProperty Name="bug_tester_id" ColumnName="bug_tester_id" />
-                <ScalarProperty Name="bug_developer_id" ColumnName="bug_developer_id" />
-                <ScalarProperty Name="bug_reject_reason" ColumnName="bug_reject_reason" />
-                <ScalarProperty Name="bug_screenshot" ColumnName="bug_screenshot" />
-                <ScalarProperty Name="bug_date" ColumnName="bug_date" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="project_team">
-            <EntityTypeMapping TypeName="bug_trackerModel.project_team">
-              <MappingFragment StoreEntitySet="project_team">
-                <ScalarProperty Name="team_sl_no" ColumnName="team_sl_no" />
-                <ScalarProperty Name="team_project_id" ColumnName="team_project_id" />
-                <ScalarProperty Name="team_user_id" ColumnName="team_user_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="projects">
             <EntityTypeMapping TypeName="bug_trackerModel.project">
               <MappingFragment StoreEntitySet="projects">
@@ -270,16 +239,47 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="bugs">
+            <EntityTypeMapping TypeName="bug_trackerModel.bug">
+              <MappingFragment StoreEntitySet="bugs">
+                <ScalarProperty Name="bug_date" ColumnName="bug_date" />
+                <ScalarProperty Name="bug_screenshot" ColumnName="bug_screenshot" />
+                <ScalarProperty Name="bug_reject_reason" ColumnName="bug_reject_reason" />
+                <ScalarProperty Name="bug_developer_id" ColumnName="bug_developer_id" />
+                <ScalarProperty Name="bug_tester_id" ColumnName="bug_tester_id" />
+                <ScalarProperty Name="bug_status" ColumnName="bug_status" />
+                <ScalarProperty Name="bug_severity" ColumnName="bug_severity" />
+                <ScalarProperty Name="bug_priority" ColumnName="bug_priority" />
+                <ScalarProperty Name="bug_line" ColumnName="bug_line" />
+                <ScalarProperty Name="bug_method" ColumnName="bug_method" />
+                <ScalarProperty Name="bug_file" ColumnName="bug_file" />
+                <ScalarProperty Name="bug_project_id" ColumnName="bug_project_id" />
+                <ScalarProperty Name="bug_description" ColumnName="bug_description" />
+                <ScalarProperty Name="bug_type" ColumnName="bug_type" />
+                <ScalarProperty Name="bug_name" ColumnName="bug_name" />
+                <ScalarProperty Name="bug_id" ColumnName="bug_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="project_team">
+            <EntityTypeMapping TypeName="bug_trackerModel.project_team">
+              <MappingFragment StoreEntitySet="project_team">
+                <ScalarProperty Name="team_user_id" ColumnName="team_user_id" />
+                <ScalarProperty Name="team_project_id" ColumnName="team_project_id" />
+                <ScalarProperty Name="team_sl_no" ColumnName="team_sl_no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="bug_trackerModel.user">
               <MappingFragment StoreEntitySet="users">
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="user_employee_id" ColumnName="user_employee_id" />
-                <ScalarProperty Name="user_password" ColumnName="user_password" />
-                <ScalarProperty Name="user_class" ColumnName="user_class" />
-                <ScalarProperty Name="user_name" ColumnName="user_name" />
-                <ScalarProperty Name="user_email" ColumnName="user_email" />
                 <ScalarProperty Name="user_flag" ColumnName="user_flag" />
+                <ScalarProperty Name="user_email" ColumnName="user_email" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="user_class" ColumnName="user_class" />
+                <ScalarProperty Name="user_password" ColumnName="user_password" />
+                <ScalarProperty Name="user_employee_id" ColumnName="user_employee_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

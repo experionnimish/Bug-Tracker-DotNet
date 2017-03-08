@@ -5,14 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d957c1816ba1487a9b1fd3c4d782a7a0" Name="Diagram1">
-        <EntityTypeShape EntityType="bug_trackerModel.bug" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="bug_trackerModel.project_team" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="bug_trackerModel.project" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="bug_trackerModel.user" Width="1.5" PointX="0.75" PointY="4.625" IsExpanded="true" />
-        <AssociationConnector Association="bug_trackerModel.FK_bugs_developer_id" ManuallyRouted="false" />
-        <AssociationConnector Association="bug_trackerModel.FK_project_team_user_id" ManuallyRouted="false" />
-        <AssociationConnector Association="bug_trackerModel.FK_projects_manager_id" ManuallyRouted="false" />
-      </Diagram>
+        <EntityTypeShape EntityType="bug_trackerModel.bug" Width="1.5" PointX="3" PointY="12" />
+        <EntityTypeShape EntityType="bug_trackerModel.project_team" Width="1.5" PointX="3" PointY="5.5" />
+        <EntityTypeShape EntityType="bug_trackerModel.user" Width="1.5" PointX="0.75" PointY="8.375" />
+        <AssociationConnector Association="bug_trackerModel.FK_bugs_developer_id" />
+        <AssociationConnector Association="bug_trackerModel.FK_project_team_user_id" />
+        <AssociationConnector Association="bug_trackerModel.FK_projects_manager_id" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

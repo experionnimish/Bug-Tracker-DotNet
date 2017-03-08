@@ -25,9 +25,9 @@ namespace Bug_Tracker_Server.Data
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<project> projects { get; set; }
         public virtual DbSet<bug> bugs { get; set; }
         public virtual DbSet<project_team> project_team { get; set; }
-        public virtual DbSet<project> projects { get; set; }
         public virtual DbSet<user> users { get; set; }
     }
 }

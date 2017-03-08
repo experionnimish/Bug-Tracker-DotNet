@@ -29,7 +29,7 @@ namespace Bug_Tracker_Server.Data
         public Nullable<int> bug_developer_id { get; set; }
         public string bug_reject_reason { get; set; }
         public string bug_screenshot { get; set; }
-        public DateTime bug_date { get; set; }
+        public System.DateTime bug_date { get; set; }
     
         public virtual user user { get; set; }
     }

@@ -1,37 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="bug_trackerModelStoreContainer" CdmEntityContainer="bug_trackerEntities">
-    <EntitySetMapping Name="bugs">
-      <EntityTypeMapping TypeName="bug_trackerModel.bug">
-        <MappingFragment StoreEntitySet="bugs">
-          <ScalarProperty Name="bug_id" ColumnName="bug_id" />
-          <ScalarProperty Name="bug_name" ColumnName="bug_name" />
-          <ScalarProperty Name="bug_type" ColumnName="bug_type" />
-          <ScalarProperty Name="bug_description" ColumnName="bug_description" />
-          <ScalarProperty Name="bug_project_id" ColumnName="bug_project_id" />
-          <ScalarProperty Name="bug_file" ColumnName="bug_file" />
-          <ScalarProperty Name="bug_method" ColumnName="bug_method" />
-          <ScalarProperty Name="bug_line" ColumnName="bug_line" />
-          <ScalarProperty Name="bug_priority" ColumnName="bug_priority" />
-          <ScalarProperty Name="bug_severity" ColumnName="bug_severity" />
-          <ScalarProperty Name="bug_status" ColumnName="bug_status" />
-          <ScalarProperty Name="bug_tester_id" ColumnName="bug_tester_id" />
-          <ScalarProperty Name="bug_developer_id" ColumnName="bug_developer_id" />
-          <ScalarProperty Name="bug_reject_reason" ColumnName="bug_reject_reason" />
-          <ScalarProperty Name="bug_screenshot" ColumnName="bug_screenshot" />
-          <ScalarProperty Name="bug_date" ColumnName="bug_date" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="project_team">
-      <EntityTypeMapping TypeName="bug_trackerModel.project_team">
-        <MappingFragment StoreEntitySet="project_team">
-          <ScalarProperty Name="team_sl_no" ColumnName="team_sl_no" />
-          <ScalarProperty Name="team_project_id" ColumnName="team_project_id" />
-          <ScalarProperty Name="team_user_id" ColumnName="team_user_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="projects">
       <EntityTypeMapping TypeName="bug_trackerModel.project">
         <MappingFragment StoreEntitySet="projects">
@@ -42,16 +11,47 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="bugs">
+      <EntityTypeMapping TypeName="bug_trackerModel.bug">
+        <MappingFragment StoreEntitySet="bugs">
+          <ScalarProperty Name="bug_date" ColumnName="bug_date" />
+          <ScalarProperty Name="bug_screenshot" ColumnName="bug_screenshot" />
+          <ScalarProperty Name="bug_reject_reason" ColumnName="bug_reject_reason" />
+          <ScalarProperty Name="bug_developer_id" ColumnName="bug_developer_id" />
+          <ScalarProperty Name="bug_tester_id" ColumnName="bug_tester_id" />
+          <ScalarProperty Name="bug_status" ColumnName="bug_status" />
+          <ScalarProperty Name="bug_severity" ColumnName="bug_severity" />
+          <ScalarProperty Name="bug_priority" ColumnName="bug_priority" />
+          <ScalarProperty Name="bug_line" ColumnName="bug_line" />
+          <ScalarProperty Name="bug_method" ColumnName="bug_method" />
+          <ScalarProperty Name="bug_file" ColumnName="bug_file" />
+          <ScalarProperty Name="bug_project_id" ColumnName="bug_project_id" />
+          <ScalarProperty Name="bug_description" ColumnName="bug_description" />
+          <ScalarProperty Name="bug_type" ColumnName="bug_type" />
+          <ScalarProperty Name="bug_name" ColumnName="bug_name" />
+          <ScalarProperty Name="bug_id" ColumnName="bug_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="project_team">
+      <EntityTypeMapping TypeName="bug_trackerModel.project_team">
+        <MappingFragment StoreEntitySet="project_team">
+          <ScalarProperty Name="team_user_id" ColumnName="team_user_id" />
+          <ScalarProperty Name="team_project_id" ColumnName="team_project_id" />
+          <ScalarProperty Name="team_sl_no" ColumnName="team_sl_no" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="users">
       <EntityTypeMapping TypeName="bug_trackerModel.user">
         <MappingFragment StoreEntitySet="users">
-          <ScalarProperty Name="user_id" ColumnName="user_id" />
-          <ScalarProperty Name="user_employee_id" ColumnName="user_employee_id" />
-          <ScalarProperty Name="user_password" ColumnName="user_password" />
-          <ScalarProperty Name="user_class" ColumnName="user_class" />
-          <ScalarProperty Name="user_name" ColumnName="user_name" />
-          <ScalarProperty Name="user_email" ColumnName="user_email" />
           <ScalarProperty Name="user_flag" ColumnName="user_flag" />
+          <ScalarProperty Name="user_email" ColumnName="user_email" />
+          <ScalarProperty Name="user_name" ColumnName="user_name" />
+          <ScalarProperty Name="user_class" ColumnName="user_class" />
+          <ScalarProperty Name="user_password" ColumnName="user_password" />
+          <ScalarProperty Name="user_employee_id" ColumnName="user_employee_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

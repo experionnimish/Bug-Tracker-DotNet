@@ -4,7 +4,7 @@
     <Key>
       <PropertyRef Name="bug_id" />
     </Key>
-    <Property Name="bug_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="bug_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="bug_name" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="bug_type" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="bug_description" Type="varchar" MaxLength="500" Nullable="false" />
@@ -19,13 +19,13 @@
     <Property Name="bug_developer_id" Type="int" />
     <Property Name="bug_reject_reason" Type="varchar" MaxLength="200" />
     <Property Name="bug_screenshot" Type="varchar" MaxLength="500" />
-    <Property Name="bug_date" Type="timestamp" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="bug_date" Type="date" Nullable="false" />
   </EntityType>
   <EntityType Name="project_team">
     <Key>
       <PropertyRef Name="team_sl_no" />
     </Key>
-    <Property Name="team_sl_no" Type="int" Nullable="false" />
+    <Property Name="team_sl_no" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="team_project_id" Type="int" Nullable="false" />
     <Property Name="team_user_id" Type="int" Nullable="false" />
   </EntityType>
@@ -33,7 +33,7 @@
     <Key>
       <PropertyRef Name="project_id" />
     </Key>
-    <Property Name="project_id" Type="int" Nullable="false" />
+    <Property Name="project_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="project_name" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="project_manager_id" Type="int" Nullable="false" />
     <Property Name="project_status" Type="varchar" MaxLength="50" Nullable="false" />
@@ -42,7 +42,7 @@
     <Key>
       <PropertyRef Name="user_id" />
     </Key>
-    <Property Name="user_id" Type="int" Nullable="false" />
+    <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="user_employee_id" Type="int" Nullable="false" />
     <Property Name="user_password" Type="varchar" MaxLength="300" Nullable="false" />
     <Property Name="user_class" Type="int" Nullable="false" />

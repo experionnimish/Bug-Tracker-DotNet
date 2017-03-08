@@ -24,6 +24,6 @@ namespace BugTrackerDTOs
         public Nullable<int> bug_developer_id { get; set; }
         public string bug_reject_reason { get; set; }
         public string bug_screenshot { get; set; }
-        public byte[] bug_date { get; set; }
+        public System.DateTime bug_date { get; set; }
     }
 }
