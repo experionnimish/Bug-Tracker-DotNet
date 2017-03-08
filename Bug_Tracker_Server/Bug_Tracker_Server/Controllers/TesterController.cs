@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using BugTrackerDTOs;
+using Bug_Tracker_Server.Mapping;
 
 namespace Bug_Tracker_Server.Controllers
 {
@@ -18,6 +20,12 @@ namespace Bug_Tracker_Server.Controllers
         {
             IGetProjectsService = new GetProjectsService();
             return IGetProjectsService.GetProjects(userObj);
+        }
+        IReportBugService IReportBugService;
+        public bool ReportBug(BugDto Bug)
+        {
+            IReportBugService = new ReportBugService();
+            return IReportBugService.ReportBug(Bug);
         }
     }
 }

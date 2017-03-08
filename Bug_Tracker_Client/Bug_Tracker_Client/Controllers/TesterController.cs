@@ -77,5 +77,26 @@ namespace Bug_Tracker_Client.Controllers
                 ViewBag.ProjectsTester = null;
             }
         }
+        public async Task<ActionResult> ReportBug(BugDto Bug)
+        {
+            HttpClient client = new HttpClient();
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(Bug);
+            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+            client.BaseAddress = new Uri("http://localhost:49380/api/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(string.Format("Tester/ReportBug"), contentPost).Result;
+            var responses = await response.Content.ReadAsStringAsync();
+            bool result = JsonConvert.DeserializeObject<bool>(responses);
+            if (result == true)
+            {
+                ViewBag.BugReportStatus = "Success";
+            }
+            else
+            {
+                ViewBag.BugReportStatus = "Fail";
+            }
+            return View("ReportBugs");
+        }
     }
 }

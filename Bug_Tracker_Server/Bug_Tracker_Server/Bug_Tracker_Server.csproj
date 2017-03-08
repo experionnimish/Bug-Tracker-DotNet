@@ -272,6 +272,8 @@
     <Compile Include="Data_Services\GetProjectsService.cs" />
     <Compile Include="Data_Services\IAuthService.cs" />
     <Compile Include="Data_Services\IGetProjectsService.cs" />
+    <Compile Include="Data_Services\IReportBugService.cs" />
+    <Compile Include="Data_Services\ReportBugService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
