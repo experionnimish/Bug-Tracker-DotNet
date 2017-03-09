@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Bug_Tracker_Server.Data_Services
 {
-    interface IGetBugsListService
+    public interface IGetBugsListService
     {
-        List<BugReportDto> GetBugsList(UserDto User)
+        List<BugReportDto> GetBugsAdminUnassigned(UserDto User);
     }
 }

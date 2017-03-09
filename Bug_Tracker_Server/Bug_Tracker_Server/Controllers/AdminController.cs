@@ -13,10 +13,11 @@ namespace Bug_Tracker_Server.Controllers
     {
         // GET: Admin
         IGetBugsListService IGetBugsListService;
+        [System.Web.Http.HttpGet]
         public List<BugReportDto> GetBugsList(UserDto User)
         {
             IGetBugsListService = new GetBugsListService();
-            return IGetBugsListService.GetBugsList(User);
+            return IGetBugsListService.GetBugsAdminUnassigned(User);
         }
     }
 }

@@ -14,6 +14,8 @@ namespace BugTrackerDTOs
         public string bug_description { get; set; }
         public int bug_project_id { get; set; }
         public string bug_project_name { get; set; }
+        public int bug_project_manager_id { get; set; }
+        public string bug_project_manager_name { get; set; }
         public string bug_file { get; set; }
         public string bug_method { get; set; }
         public int bug_line { get; set; }

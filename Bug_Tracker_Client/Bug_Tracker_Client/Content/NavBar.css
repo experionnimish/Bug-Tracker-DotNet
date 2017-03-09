@@ -94,3 +94,51 @@ table{
   border-color: rgba(10, 11, 15, 0.5);
   opacity: 0.9;
 }
+
+.row{
+    margin-top:20px;
+    padding: 0 10px;
+}
+.clickable{
+    cursor: pointer;
+}
+
+.panel-heading div {
+    margin-top: -18px;
+    font-size: 15px;
+}
+.panel-heading div span{
+    margin-left:5px;
+}
+.panel-filter{
+    display: none;
+    padding: 10px;
+}
+
+.panel-body {
+  /*padding: 0!important;*/
+}
+
+
+#dev-table_wrapper .row {
+  margin: 0;
+  padding: 0;
+}
+
+#dev-table_wrapper .col-sm-12 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.table {
+  margin: 0;
+}
+
+.pagination {
+  margin: 5px 0;
+}
+
+
+.resp {
+  overflow: auto;
+}
