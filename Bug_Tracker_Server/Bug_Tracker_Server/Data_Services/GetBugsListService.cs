@@ -10,13 +10,13 @@ namespace Bug_Tracker_Server.Data_Services
     public class GetBugsListService : IGetBugsListService
     {
         bug_trackerEntities entities = new bug_trackerEntities();
-        public List<BugReportDto> GetBugsAdminUnassigned(UserDto User)
+        public List<BugReportDto> GetBugsAdmin(string Type, UserDto User)
         {
             BugReportDto BugDetails;
             List<BugReportDto> BugDetailsList = new List<BugReportDto>();
             var bugReportDto = from bugs in entities.bugs
                                from projects in entities.projects
-                               from users in entities.users.Where(x => (projects.project_id == bugs.bug_project_id) && (bugs.bug_tester_id == x.user_id || bugs.bug_developer_id == x.user_id || projects.project_manager_id == x.user_id) && bugs.bug_status == "Open")
+                               from users in entities.users.Where(x => (projects.project_id == bugs.bug_project_id && projects.project_manager_id == User.user_id) && (bugs.bug_tester_id == x.user_id || bugs.bug_developer_id == x.user_id || projects.project_manager_id == x.user_id) && bugs.bug_status == Type)
                                select new { bugs, projects, users };
 
             var BugReportDtoList = bugReportDto.ToList();

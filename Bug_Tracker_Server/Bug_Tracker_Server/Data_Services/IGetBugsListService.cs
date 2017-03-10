@@ -9,6 +9,6 @@ namespace Bug_Tracker_Server.Data_Services
 {
     public interface IGetBugsListService
     {
-        List<BugReportDto> GetBugsAdminUnassigned(UserDto User);
+        List<BugReportDto> GetBugsAdmin(string Type, UserDto User);
     }
 }
