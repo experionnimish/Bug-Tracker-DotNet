@@ -19,5 +19,12 @@ namespace Bug_Tracker_Server.Controllers
             IGetBugsListService = new GetBugsListService();
             return IGetBugsListService.GetBugsAdmin(Type, User);
         }
+        IGetTeamMembersService IGetTeamMembersService;
+        [System.Web.Http.HttpPost]
+        public List<UserDto> GetTeamMembers([FromUri] int UserClass, [FromBody] UserDto User)
+        {
+            IGetTeamMembersService = new GetTeamMembersService();
+            return IGetTeamMembersService.GetTeamMembers(UserClass, User);
+        }
     }
 }
