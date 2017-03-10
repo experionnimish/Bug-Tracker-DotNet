@@ -9,6 +9,6 @@ namespace Bug_Tracker_Server.Data_Services
 {
     interface IGetTeamMembersService
     {
-        List<UserDto> GetTeamMembers(int UserClass, UserDto User);
+        List<UserDto> GetTeamMembers(int ProjectId, int UserClass, UserDto User);
     }
 }
