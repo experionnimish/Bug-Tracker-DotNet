@@ -25,6 +25,7 @@ namespace Bug_Tracker_Server.Data_Services
             while (i < BugReportDtoList.Count())
             {
                 BugDetails = new BugReportDto();
+                BugDetails.bug_id = BugReportDtoList[i].bugs.bug_id;
                 BugDetails.bug_name = BugReportDtoList[i].bugs.bug_name;
                 BugDetails.bug_type = BugReportDtoList[i].bugs.bug_type;
                 BugDetails.bug_description = BugReportDtoList[i].bugs.bug_description;

@@ -102,31 +102,35 @@
                             <label for="file" class="form-control-label">Line</label>
                             <input type="text" class="form-control" id="line" value="" disabled>
                         </div>
-                        <% if(typeof(resultAdmin) != 'undefined') { %>
-                        <% if(state == 'unassigned') { %>
-                        <div class="col-sm-4">
-                            <label for="developer" class="form-control-label">Developer</label>
-                            <div class="dev_id">
-                                <select class="form-control" name="developer" id="devResult" required>
-                                    <!-- <option value="">Select Developer</option> -->
-                                </select>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                        </div>
-                        <% } %>
-                        <% if(state == 'approve') { %>
-                        <div class="col-sm-4">
-                            <label for="status" class="form-control-label">Status</label>
-                            <div class="stat">
-                                <select class="form-control" name="status" onchange="rejectCheck($(this))">
-                                    <option value="">Select status</option>
-                                    <option value="Approve Reject">Reject</option>
-                                    <option value="Closed">Closed</option>
-                                </select>
-                            </div>
-                        </div>
-                        <% } %>
-                        <% } %>
+                        @{
+                            if (ViewBag.Type == "Unassigned")
+                            {
+                                <div class="col-sm-4">
+                                    <label for="developer" class="form-control-label">Developer</label>
+                                    <div class="dev_id">
+                                        <select class="form-control" name="developer" id="devResult" required>
+                                            <!-- <option value="">Select Developer</option> -->
+                                        </select>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        @{
+                            if (ViewBag.Type == "Approve")
+                            {
+                                <div class="col-sm-4">
+                                    <label for="status" class="form-control-label">Status</label>
+                                    <div class="stat">
+                                        <select class="form-control" name="status" onchange="rejectCheck($(this))">
+                                            <option value="">Select status</option>
+                                            <option value="Approve Reject">Reject</option>
+                                            <option value="Closed">Closed</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+                        }
                     </div>
                     <div class="row ifReject" style="display: none;">
                         <div class="col-sm-12">
@@ -137,14 +141,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <% if(typeof(resultAdmin) != 'undefined') { %>
-                <% if(state == 'unassigned') { %>
-                <button class="btn btn-sm btn-primary update">Assign</button>
-                <% } %>
-                <% if(state == 'approve') { %>
                 <button class="btn btn-sm btn-primary update">Save</button>
-                <% } %>
-                <% } %>
                 <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -178,7 +175,7 @@
                         <td>@item.bug_priority</td>
                         <td>@item.bug_project_name</td>
                         <td class="text-center">
-                            <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal" data-bug="@item.bug_id">View More</button>
+                            <button type="button" id="ModalButton" class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal" data-bug="@item.bug_id">View More</button>
                         </td>
                     </tr>
                 }
@@ -186,7 +183,40 @@
         }
     </tbody>
 </table>
-
 <script>
-    function()
+    var BugsList = @Html.Raw(Json.Encode(Model));
+    $('#exampleModal').on('show.bs.modal', function (event) {
+        var modal = $(this);
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var BugId = button.data('bug'); // Extract info from data-* attributes
+        BugsList.forEach(function(item, index){
+            if(item.bug_id == BugId){
+                modal.find('#bug_name').val(item.bug_name);
+                modal.find('#bug_id').val(item.bug_id);
+                modal.find('#bug_type').val(item.bug_type);
+                modal.find('#description').val(item.bug_description);
+                modal.find('#priority').val(item.bug_priority);
+                modal.find('#severity').val(item.bug_severity);
+                modal.find('#current_status').val(item.bug_status);
+                modal.find('#project_id').val(item.bug_project_name);
+                modal.find('#tester_id').val(item.bug_tester_name);
+                modal.find('#project_manager').val(item.bug_project_manager_name);
+                modal.find('#file').val(item.bug_file);
+                console.log(item.bug_date);
+                modal.find('#date').val((item.bug_date));
+                modal.find('#method').val(item.bug_method);
+                modal.find('#line').val(item.bug_line);
+                //modal.find("#scrImg").attr("src", '/screenshots/' + item.screenshot);
+                if ((item.bug_status == 'Review Reject') || (item.bug_status == 'Approve Reject')) {
+                    modal.find('#reason').val(item.reason);
+                }
+                if (!(item.bug_developer_id)) {
+                    modal.find('#developer_id').val("Unassigned");
+                } 
+                else {
+                    modal.find('#developer_id').val(item.bug_developer_name);
+                }
+            }
+        });
+    })
 </script>

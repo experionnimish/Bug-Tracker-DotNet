@@ -1,6 +1,5 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding: 0;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -35,5 +34,9 @@ body {
 
 .forgot_password {
   margin-top: 15px;
+}
+
+.modal-backdrop {
+    z-index: -1;
 }
 

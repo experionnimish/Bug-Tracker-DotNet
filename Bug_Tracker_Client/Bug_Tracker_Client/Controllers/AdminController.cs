@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -94,7 +95,7 @@ namespace Bug_Tracker_Client.Controllers
         }
         public async Task<ActionResult> GetBugsList(string Type)
         {
-            if(Type == "Unassigned")
+            if(Type != null)
             {
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri("http://localhost:49380/api/");
@@ -106,6 +107,7 @@ namespace Bug_Tracker_Client.Controllers
                 BugsList = JsonConvert.DeserializeObject<List<BugReportDto>>(responses);
                 if (BugsList != null)
                 {
+                    ViewBag.Type = Type;
                     return View("_BugReport", BugsList);
                 }
                 else

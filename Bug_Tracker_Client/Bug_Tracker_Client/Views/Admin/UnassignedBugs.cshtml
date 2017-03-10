@@ -9,7 +9,7 @@
             <h3 class="panel-title">Unassigned Bugs</h3>
             <div class="pull-right">
                 <span class="clickable filter" data-toggle="tooltip" title="Toggle table filter" data-container="body">
-                    @*<i class="fa fa-filter" aria-hidden="true"></i>*@Filter
+                    <i class="glyphicons glyphicon-user"></i>
                 </span>
             </div>
         </div>
@@ -18,7 +18,7 @@
                 <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Bugs" />
             </div>
             <div id="BugsList">
-                
+
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
         $.ajax({
             type: "GET",
             url: "/Admin/GetBugsList",
-            data: {Type : "Unassigned"},
+            data: { Type: "Open" },
             success: function (data) {
                 $("#BugsList").html(data);
             },
