@@ -26,5 +26,11 @@ namespace Bug_Tracker_Server.Controllers
             IGetTeamMembersService = new GetTeamMembersService();
             return IGetTeamMembersService.GetTeamMembers(ProjectId, UserClass, User);
         }
+        IUpdateBugsService IUpdateBugsService;
+        public bool AssignDeveloper([FromUri] int DeveloperId, [FromUri] int BugId, [FromBody] UserDto User)
+        {
+            IUpdateBugsService = new UpdateBugsService();
+            return IUpdateBugsService.AssignDeveloper(DeveloperId, BugId, User);
+        }
     }
 }

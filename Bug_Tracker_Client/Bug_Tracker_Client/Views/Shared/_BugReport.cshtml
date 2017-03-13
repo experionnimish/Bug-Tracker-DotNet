@@ -212,11 +212,61 @@
                 }
                 if (!(item.bug_developer_id)) {
                     modal.find('#developer_id').val("Unassigned");
-                } 
+                }
                 else {
                     modal.find('#developer_id').val(item.bug_developer_name);
                 }
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/GetTeamMembers",
+                    data: { ProjectId: item.bug_project_id, UserClass: 2 },
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        var TeamList = "<option value=''>Select Developer</option>";
+                        if(data != null) {
+                            data.forEach(function(item,index) {
+                                TeamList += "<option value = '" + item.user_id + "'>" + item.user_name + "</option>";
+                            });
+                        }
+                        console.log(TeamList);
+                        $("#devResult").empty().append(TeamList);
+                    },
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+                });
             }
         });
-    })
+    });
+    $(".update").click(function() {
+        var $dev = $(".dev_id")     // Gets a descendent with class="dev_id"
+        .find(":selected").val();
+        if(!$dev) {
+            alert("Please select a developer");
+        }
+        else {
+            var $bug = $('#bug_id').val();         // Retrieves the text within <td>
+            $.ajax({
+                type: "POST",
+                url: "/Admin/AssignDeveloper",
+                data: { DeveloperId: $dev, BugId: $bug },
+                success: function (data) {
+                    if(data == "True")
+                        alert("Bug assigned to developer successfully!");
+                    else
+                        alert("An error has occured!");
+                    location.reload();
+                },
+                failure: function (data) {
+                    alert(data.responseText);
+                },
+                error: function (data) {
+                    alert(data.responseText);
+                }
+            });
+        }
+    });
 </script>

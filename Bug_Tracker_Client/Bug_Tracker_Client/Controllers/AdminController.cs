@@ -95,7 +95,7 @@ namespace Bug_Tracker_Client.Controllers
         }
         public async Task<ActionResult> GetBugsList(string Type)
         {
-            if(Type != null)
+            if (Type != null)
             {
                 HttpClient client = new HttpClient();
                 UserDto user = (UserDto)Session["User"];
@@ -122,6 +122,46 @@ namespace Bug_Tracker_Client.Controllers
             {
                 return View();
             }
+        }
+        public async Task<string> GetTeamMembers(int ProjectId, int UserClass)
+        {
+            HttpClient client = new HttpClient();
+            UserDto user = (UserDto)Session["User"];
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+            client.BaseAddress = new Uri("http://localhost:49380/api/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            List<UserDto> MemberList = new List<UserDto>();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(string.Format("Admin/GetTeamMembers?ProjectId=" + ProjectId +"&UserClass=" + UserClass), contentPost).Result;
+            var responses = await response.Content.ReadAsStringAsync();
+            MemberList = JsonConvert.DeserializeObject<List<UserDto>>(responses);
+            var MyListArray = MemberList.Cast<UserDto>().ToArray();
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            var JSArray = serializer.Serialize(MyListArray);
+            //System.Web.Script.Serialization.JavaScriptSerializer oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            if (MemberList != null)
+            {
+                //string MemberString = oSerializer.Serialize(MemberList);
+                return JSArray;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public async Task<bool> AssignDeveloper(int DeveloperId, int BugId)
+        {
+                HttpClient client = new HttpClient();
+                UserDto user = (UserDto)Session["User"];
+                var param = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+                HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+                client.BaseAddress = new Uri("http://localhost:49380/api/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = client.PostAsync(string.Format("Admin/AssignDeveloper?DeveloperId=" + DeveloperId + "&BugId=" + BugId), contentPost).Result;
+                var responses = await response.Content.ReadAsStringAsync();
+                return (JsonConvert.DeserializeObject<bool>(responses));
         }
     }
 }
