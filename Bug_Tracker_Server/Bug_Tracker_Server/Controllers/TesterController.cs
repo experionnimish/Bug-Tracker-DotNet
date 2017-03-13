@@ -30,5 +30,23 @@ namespace Bug_Tracker_Server.Controllers
             IReportBugService = new ReportBugService();
             return IReportBugService.ReportBug(Bug);
         }
+        IGetBugsListService IGetBugsListService;
+        [System.Web.Http.HttpPost]
+        public List<BugReportDto> GetBugsList([FromUri] string Type, [FromBody] UserDto User)
+        {
+            IGetBugsListService = new GetBugsListService();
+            return IGetBugsListService.GetBugsTester(Type, User);
+        }
+        IUpdateBugsService IUpdateBugsService;
+        public bool RejectBugs([FromUri] string RejectReason, [FromUri] string BugStatus, [FromUri] int BugId, [FromBody] UserDto User)
+        {
+            IUpdateBugsService = new UpdateBugsService();
+            return IUpdateBugsService.RejectBugs(RejectReason, BugStatus, BugId, User);
+        }
+        public bool ApproveBugs([FromUri] string BugStatus, [FromUri] int BugId, [FromBody] UserDto User)
+        {
+            IUpdateBugsService = new UpdateBugsService();
+            return IUpdateBugsService.ApproveBugs(BugStatus, BugId, User);
+        }
     }
 }

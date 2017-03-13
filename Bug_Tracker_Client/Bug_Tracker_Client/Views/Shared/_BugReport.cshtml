@@ -115,8 +115,6 @@
                                     </div>
                                 </div>
                             }
-                        }
-                        @{
                             if (ViewBag.Type == "Approve")
                             {
                                 <div class="col-sm-4">
@@ -126,6 +124,19 @@
                                             <option value="">Select status</option>
                                             <option value="Approve Reject">Reject</option>
                                             <option value="Closed">Closed</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+                            if (ViewBag.Type == "Review")
+                            {
+                                <div class="col-sm-4">
+                                    <label for="status" class="form-control-label">Status</label>
+                                    <div class="stat">
+                                        <select class="form-control" name="status" onchange="rejectCheck($(this))">
+                                            <option value="">Select status</option>
+                                            <option value="Review Reject">Reject</option>
+                                            <option value="Approve">Request Approval</option>
                                         </select>
                                     </div>
                                 </div>
@@ -308,6 +319,62 @@
                     $.ajax({
                         type: "POST",
                         url: "/Admin/ApproveBugs",
+                        data: { BugStatus : $stat, BugId : $bug },
+                        success: function (data) {
+                            if(data == "True")
+                                alert("Bug status changed successfully!");
+                            else
+                                alert("An error has occured!");
+                            location.reload();
+                        },
+                        failure: function (data) {
+                            alert(data.responseText);
+                        },
+                        error: function (data) {
+                            alert(data.responseText);
+                        }
+                    });
+                }
+            }
+        }
+        else if('@ViewBag.Type' == "Review") {
+            var $stat = $(".stat").find(":selected").val();
+            if(!$stat) {
+                alert("Please select status");
+            }
+            else {
+                var $bug = $('#bug_id').val();         // Retrieves the text within <td>
+                if($stat == 'Review Reject') {
+                    var $reason = $("#reason").val();
+                    if(!$reason) {
+                        alert("Please enter a reason");
+                    }
+                    else {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Tester/RejectBugs",
+                            data: { RejectReason : $reason, BugStatus : $stat, BugId : $bug },
+                            success: function (data) {
+                                if(data == "True")
+                                    alert("Bug status changed successfully!");
+                                else
+                                    alert("An error has occured!");
+                                location.reload();
+                            },
+                            failure: function (data) {
+                                alert(data.responseText);
+                            },
+                            error: function (data) {
+                                alert(data.responseText);
+                            }
+                        });
+                    }
+                }
+                else {
+                    console.log("Else entered");
+                    $.ajax({
+                        type: "POST",
+                        url: "/Tester/ApproveBugs",
                         data: { BugStatus : $stat, BugId : $bug },
                         success: function (data) {
                             if(data == "True")
