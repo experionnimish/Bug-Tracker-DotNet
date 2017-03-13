@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Assigned Bugs";
+    ViewBag.Title = "Approve Bugs";
 }
 <script src="~/Scripts/togglesearch.js"></script>
 <div class="container">
@@ -29,7 +29,7 @@
         $.ajax({
             type: "GET",
             url: "/Admin/GetBugsList",
-            data: { Type: "Assigned" },
+            data: { Type: "Approve" },
             success: function (data) {
                 $("#BugsList").html(data);
             },

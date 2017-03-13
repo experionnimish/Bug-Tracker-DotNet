@@ -14,6 +14,18 @@ namespace Bug_Tracker_Client.Controllers
 {
     public class HomeController : Controller
     {
+        public ActionResult Index()
+        {
+            var user = (UserDto)Session["User"];
+            if (user.user_class == 0)
+                return RedirectToAction("UnassignedBugs", "Admin");
+            if (user.user_class == 1)
+                return RedirectToAction("Tasks", "Tester");
+            if (user.user_class == 2)
+                return RedirectToAction("BugReports", "Developer");
+            else
+                return RedirectToAction("Login");
+        }
         public ActionResult Login()
         {
             return View();

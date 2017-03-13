@@ -242,31 +242,96 @@
         });
     });
     $(".update").click(function() {
-        var $dev = $(".dev_id")     // Gets a descendent with class="dev_id"
-        .find(":selected").val();
-        if(!$dev) {
-            alert("Please select a developer");
+        if ('@ViewBag.Type' == "Open") {
+            var $dev = $(".dev_id").find(":selected").val();
+            if(!$dev) {
+                alert("Please select a developer");
+            }
+            else {
+                var $bug = $('#bug_id').val();         // Retrieves the text within <td>
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/AssignDeveloper",
+                    data: { DeveloperId: $dev, BugId: $bug },
+                    success: function (data) {
+                        if(data == "True")
+                            alert("Bug assigned to developer successfully!");
+                        else
+                            alert("An error has occured!");
+                        location.reload();
+                    },
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+                });
+            }
         }
-        else {
-            var $bug = $('#bug_id').val();         // Retrieves the text within <td>
-            $.ajax({
-                type: "POST",
-                url: "/Admin/AssignDeveloper",
-                data: { DeveloperId: $dev, BugId: $bug },
-                success: function (data) {
-                    if(data == "True")
-                        alert("Bug assigned to developer successfully!");
-                    else
-                        alert("An error has occured!");
-                    location.reload();
-                },
-                failure: function (data) {
-                    alert(data.responseText);
-                },
-                error: function (data) {
-                    alert(data.responseText);
+        else if('@ViewBag.Type' == "Approve") {
+            var $stat = $(".stat").find(":selected").val();
+            if(!$stat) {
+                alert("Please select a status");
+            }
+            else {
+                var $bug = $('#bug_id').val();         // Retrieves the text within <td>
+                if($stat == 'Approve Reject') {
+                    var $reason = $("#reason").val();
+                    if(!$reason) {
+                        alert("Please enter a reason");
+                    }
+                    else {
+                        var $bug = $('#bug_id').val();         // Retrieves the text within <td>
+                        $.ajax({
+                            type: "POST",
+                            url: "/Admin/RejectBugs",
+                            data: { RejectReason : $reason, BugStatus : $stat, BugId : $bug },
+                            success: function (data) {
+                                if(data == "True")
+                                    alert("Bug status changed successfully!");
+                                else
+                                    alert("An error has occured!");
+                                location.reload();
+                            },
+                            failure: function (data) {
+                                alert(data.responseText);
+                            },
+                            error: function (data) {
+                                alert(data.responseText);
+                            }
+                        });
+                    }
                 }
-            });
+                else {
+                    var $bug = $('#bug_id').val();         // Retrieves the text within <td>
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/ApproveBugs",
+                        data: { BugStatus : $stat, BugId : $bug },
+                        success: function (data) {
+                            if(data == "True")
+                                alert("Bug status changed successfully!");
+                            else
+                                alert("An error has occured!");
+                            location.reload();
+                        },
+                        failure: function (data) {
+                            alert(data.responseText);
+                        },
+                        error: function (data) {
+                            alert(data.responseText);
+                        }
+                    });
+                }
+            }
         }
     });
+    function rejectCheck(that) {
+        if ((that.val() == "Review Reject") || (that.val() == "Approve Reject")) {
+            $(".ifReject")[0].style.display = "block";
+        } else {
+            $(".ifReject")[0].style.display = "none";
+        }
+    }
 </script>

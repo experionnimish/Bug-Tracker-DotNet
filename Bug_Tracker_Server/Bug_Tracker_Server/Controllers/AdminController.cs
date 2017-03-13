@@ -32,5 +32,15 @@ namespace Bug_Tracker_Server.Controllers
             IUpdateBugsService = new UpdateBugsService();
             return IUpdateBugsService.AssignDeveloper(DeveloperId, BugId, User);
         }
+        public bool RejectBugs([FromUri] string RejectReason, [FromUri] string BugStatus, [FromUri] int BugId, [FromBody] UserDto User)
+        {
+            IUpdateBugsService = new UpdateBugsService();
+            return IUpdateBugsService.RejectBugs(RejectReason, BugStatus, BugId, User);
+        }
+        public bool ApproveBugs([FromUri] string BugStatus, [FromUri] int BugId, [FromBody] UserDto User)
+        {
+            IUpdateBugsService = new UpdateBugsService();
+            return IUpdateBugsService.ApproveBugs(BugStatus, BugId, User);
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace Bug_Tracker_Client.Controllers
             else
                 return View("Login");
         }
-        public ActionResult ApproveBugs()
+        public ActionResult ApproveResolvedBugs()
         {
             if (IsAuthenticated())
                 return View();
@@ -162,6 +162,32 @@ namespace Bug_Tracker_Client.Controllers
                 var response = client.PostAsync(string.Format("Admin/AssignDeveloper?DeveloperId=" + DeveloperId + "&BugId=" + BugId), contentPost).Result;
                 var responses = await response.Content.ReadAsStringAsync();
                 return (JsonConvert.DeserializeObject<bool>(responses));
+        }
+        public async Task<bool> RejectBugs(string RejectReason, string BugStatus, int BugId)
+        {
+            HttpClient client = new HttpClient();
+            UserDto user = (UserDto)Session["User"];
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+            client.BaseAddress = new Uri("http://localhost:49380/api/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(string.Format("Admin/RejectBugs?RejectReason=" + RejectReason + "&BugStatus=" + BugStatus + "&BugId=" + BugId), contentPost).Result;
+            var responses = await response.Content.ReadAsStringAsync();
+            return (JsonConvert.DeserializeObject<bool>(responses));
+        }
+        public async Task<bool> ApproveBugs(string BugStatus, int BugId)
+        {
+            HttpClient client = new HttpClient();
+            UserDto user = (UserDto)Session["User"];
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+            client.BaseAddress = new Uri("http://localhost:49380/api/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(string.Format("Admin/ApproveBugs?BugStatus=" + BugStatus + "&BugId=" + BugId), contentPost).Result;
+            var responses = await response.Content.ReadAsStringAsync();
+            return (JsonConvert.DeserializeObject<bool>(responses));
         }
     }
 }
