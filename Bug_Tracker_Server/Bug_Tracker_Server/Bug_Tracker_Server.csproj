@@ -239,6 +239,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\DeveloperController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TesterController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -374,6 +375,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Admin\" />
+    <Folder Include="Views\Developer\" />
     <Folder Include="Views\Tester\" />
   </ItemGroup>
   <ItemGroup>

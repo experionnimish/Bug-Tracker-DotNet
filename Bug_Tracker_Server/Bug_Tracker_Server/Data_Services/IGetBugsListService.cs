@@ -11,5 +11,7 @@ namespace Bug_Tracker_Server.Data_Services
     {
         List<BugReportDto> GetBugsAdmin(string Type, UserDto User);
         List<BugReportDto> GetBugsTester(string Type, UserDto User);
+        List<BugReportDto> GetBugsTesterTrack(string Type, UserDto User);
+        List<BugReportDto> GetBugsDeveloper(string Type, UserDto User);
     }
 }
