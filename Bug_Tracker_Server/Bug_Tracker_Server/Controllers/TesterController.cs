@@ -60,5 +60,10 @@ namespace Bug_Tracker_Server.Controllers
             IUpdateBugsService = new UpdateBugsService();
             return IUpdateBugsService.ApproveBugs(BugStatus, BugId, User);
         }
+        public bool EditBug(BugDto Bug)
+        {
+            IUpdateBugsService = new UpdateBugsService();
+            return IUpdateBugsService.EditBug(Bug);
+        }
     }
 }

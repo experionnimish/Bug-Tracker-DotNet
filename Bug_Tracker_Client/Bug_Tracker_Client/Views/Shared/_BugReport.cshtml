@@ -169,7 +169,14 @@
             <th>Severity</th>
             <th>Priority</th>
             <th>Project</th>
+            <th>Status</th>
             <th></th>
+            @{
+                if (ViewBag.Type == "Track")
+                {
+                    <th class="text-center">Edit</th>
+                }
+            }
         </tr>
     </thead>
     <tbody>
@@ -185,9 +192,25 @@
                         <td>@item.bug_severity</td>
                         <td>@item.bug_priority</td>
                         <td>@item.bug_project_name</td>
+                        <td>@item.bug_status</td>
                         <td class="text-center">
                             <button type="button" id="ModalButton" class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal" data-bug="@item.bug_id">View More</button>
                         </td>
+                        @{
+                            if (ViewBag.Type == "Track")
+                            {
+                                if (item.bug_status == "Open")
+                                {
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-primary edit" id="editButton" data-bug="@item.bug_id">Edit Bug Details</button>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">Edit not available</td>
+                                }
+                            }
+                        }
                     </tr>
                 }
             }
@@ -393,6 +416,27 @@
                 }
             }
         }
+    });
+    $("#editButton").click(function() {
+        var BugId = $("#editButton").data('bug');
+        BugsList.forEach(function(item, index){
+            if(item.bug_id == BugId){
+                $.ajax({
+                    type: "POST",
+                    url: "/Tester/EditBugDetails",
+                    data: item,
+                    success: function (data) {
+                        $(".body-content").html(data);
+                    },
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+                });
+            }
+        });
     });
     function rejectCheck(that) {
         if ((that.val() == "Review Reject") || (that.val() == "Approve Reject")) {

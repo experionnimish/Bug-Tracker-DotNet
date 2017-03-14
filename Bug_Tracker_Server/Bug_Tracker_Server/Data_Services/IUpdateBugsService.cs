@@ -12,5 +12,6 @@ namespace Bug_Tracker_Server.Data_Services
         bool AssignDeveloper(int DeveloperId, int BugId, UserDto User);
         bool RejectBugs(string RejectReason, string BugStatus, int BugId, UserDto User);
         bool ApproveBugs(string BugStatus, int BugId, UserDto User);
+        bool EditBug(BugDto Bug);
     }
 }

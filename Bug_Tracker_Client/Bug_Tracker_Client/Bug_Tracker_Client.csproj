@@ -314,6 +314,7 @@
     <Content Include="Views\Admin\ApproveResolvedBugs.cshtml" />
     <Content Include="Views\Admin\ManageProjects.cshtml" />
     <Content Include="Views\Shared\_BugReport.cshtml" />
+    <Content Include="Views\Tester\EditBugDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

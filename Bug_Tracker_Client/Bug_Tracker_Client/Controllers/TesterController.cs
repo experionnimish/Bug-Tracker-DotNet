@@ -34,6 +34,17 @@ namespace Bug_Tracker_Client.Controllers
             else
                 return View("Login");
         }
+        public async Task<ActionResult> EditBugDetails(BugDto Bug)
+        {
+            if (IsAuthenticated())
+            {
+                var user = Session["User"];
+                GetProjects((UserDto)user);
+                return View("EditBugDetails", Bug);
+            }
+            else
+                return View("Login");
+        }
         public ActionResult ReviewBugs()
         {
             if (IsAuthenticated())
@@ -197,6 +208,39 @@ namespace Bug_Tracker_Client.Controllers
             var response = client.PostAsync(string.Format("Tester/ApproveBugs?BugStatus=" + BugStatus + "&BugId=" + BugId), contentPost).Result;
             var responses = await response.Content.ReadAsStringAsync();
             return (JsonConvert.DeserializeObject<bool>(responses));
+        }
+        public async Task<ActionResult> EditBug(BugDto Bug)
+        {
+            if (ModelState.IsValid)
+            {
+                HttpClient client = new HttpClient();
+                UserDto user = (UserDto)Session["User"];
+                Bug.bug_tester_id = user.user_id;
+                Bug.bug_status = "Open";
+                Bug.bug_date = DateTime.Now;
+                var param = Newtonsoft.Json.JsonConvert.SerializeObject(Bug);
+                HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+                client.BaseAddress = new Uri("http://localhost:49380/api/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = client.PostAsync(string.Format("Tester/EditBug"), contentPost).Result;
+                var responses = await response.Content.ReadAsStringAsync();
+                bool result = JsonConvert.DeserializeObject<bool>(responses);
+                if (result == true)
+                {
+                    ViewBag.BugEditStatus = "Success";
+                }
+                else
+                {
+                    ViewBag.BugEditStatus = "Fail";
+                }
+                return View("TrackBugs");
+            }
+            else
+            {
+                ViewBag.BugEditStatus = "Fail";
+                return View("TrackBugs");
+            }
         }
     }
 }

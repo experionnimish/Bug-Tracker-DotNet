@@ -14,6 +14,7 @@ namespace Bug_Tracker_Server.Mapping
             BugDto bugDto = new BugDto();
             if (bugobj != null)
             {
+                bugDto.bug_id = bugobj.bug_id;
                 bugDto.bug_name = bugobj.bug_name;
                 bugDto.bug_type = bugobj.bug_type;
                 bugDto.bug_description = bugobj.bug_description;

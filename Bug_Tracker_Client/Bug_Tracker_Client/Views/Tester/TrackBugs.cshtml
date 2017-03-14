@@ -5,6 +5,25 @@
 <script src="~/Scripts/togglesearch.js"></script>
 <div class="container">
     <div class="panel panel-primary resp">
+        @{
+            if (ViewBag.BugEditStatus != null)
+            {
+                if (ViewBag.BugEditStatus == "Success")
+                {
+                    <div class="alert alert-success alert-dismissable fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong>&nbspBug edited successfully.
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger alert-dismissable fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong>&nbspBug edit failed.
+                    </div>
+                }
+            }
+        }
         <div class="panel-heading">
             <h3 class="panel-title">@ViewBag.Title</h3>
             <div class="pull-right">

@@ -1,8 +1,10 @@
 ﻿using Bug_Tracker_Server.Data;
+using Bug_Tracker_Server.Mapping;
 using BugTrackerDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 
 namespace Bug_Tracker_Server.Data_Services
@@ -47,6 +49,32 @@ namespace Bug_Tracker_Server.Data_Services
                 return true;
             }
             catch
+            {
+                return false;
+            }
+        }
+        public bool EditBug(BugDto Bug)
+        {
+            try
+            {
+                var BugEdit = entities.bugs.Where(x => x.bug_id == Bug.bug_id).FirstOrDefault();
+                BugDto BugEditDto = BugEntityDto.ToDto(BugEdit);
+                foreach (PropertyInfo propertyInfo in typeof(bug).GetProperties())
+                {
+                    if (propertyInfo.CanRead)
+                    {
+                        object firstValue = propertyInfo.GetValue(BugEntityDto.ToEntity(Bug), null);
+                        object secondValue = propertyInfo.GetValue(BugEntityDto.ToEntity(BugEditDto), null);
+                        if (!object.Equals(firstValue, secondValue))
+                        {
+                            propertyInfo.SetValue(BugEdit, firstValue, null);
+                        }
+                    }
+                }
+                entities.SaveChanges();
+                return true;
+            }
+            catch (Exception)
             {
                 return false;
             }
