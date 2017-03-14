@@ -19,7 +19,10 @@ namespace Bug_Tracker_Client.Controllers
         public ActionResult Tasks()
         {
             if (IsAuthenticated())
+            {
+
                 return View();
+            }
             else
                 return View("Login");
         }

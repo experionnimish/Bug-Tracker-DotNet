@@ -2,6 +2,40 @@
 @{
     ViewBag.Title = "Tasks";
 }
-
-<h2>Tasks</h2>
-
+<div class="container">
+    <div class="panel panel-primary resp">
+        <div class="panel-heading">
+            <h3 class="panel-title">@ViewBag.Title</h3>
+            <div class="pull-right">
+                <span class="clickable filter" data-toggle="tooltip" title="Toggle table filter" data-container="body">
+                    <i class="glyphicons glyphicon-user"></i>
+                </span>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="panel-filter">
+                <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Bugs" />
+            </div>
+            <div id="BugsList">
+                <table class="table table-responsive table-hover" id="dev-table">
+                    <thead>
+                        <tr>
+                            <th>Project ID</th>
+                            <th>Project Name</th>
+                            <th>Manager Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% resultTes.forEach(function(item, index) { %>
+                        <tr>
+                            <td><%= resultTes[index].projectId %></td>
+                            <td><%= resultTes[index].projectName %></td>
+                            <td><%= resultTes[index].managerName %></td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
