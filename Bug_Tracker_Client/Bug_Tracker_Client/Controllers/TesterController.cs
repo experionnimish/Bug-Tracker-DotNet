@@ -16,12 +16,29 @@ namespace Bug_Tracker_Client.Controllers
     public class TesterController : Controller
     {
         // GET: Tester
-        public ActionResult Tasks()
+        public async Task<ActionResult> Tasks()
         {
             if (IsAuthenticated())
             {
-
-                return View();
+                HttpClient client = new HttpClient();
+                UserDto user = (UserDto)Session["User"];
+                var param = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+                HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+                client.BaseAddress = new Uri("http://localhost:49380/api/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                List<ProjectDto> ProjectsList = new List<ProjectDto>();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = client.PostAsync(string.Format("Tester/Tasks"), contentPost).Result;
+                var responses = await response.Content.ReadAsStringAsync();
+                ProjectsList = JsonConvert.DeserializeObject<List<ProjectDto>>(responses);
+                if (ProjectsList != null)
+                {
+                    return View("Tasks", ProjectsList);
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
                 return View("Login");
@@ -93,7 +110,7 @@ namespace Bug_Tracker_Client.Controllers
         }
         public async Task<ActionResult> ReportBug(BugDto Bug)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 HttpClient client = new HttpClient();
                 UserDto user = (UserDto)Session["User"];

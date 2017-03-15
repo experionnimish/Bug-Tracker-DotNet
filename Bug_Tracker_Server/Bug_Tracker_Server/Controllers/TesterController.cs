@@ -60,10 +60,19 @@ namespace Bug_Tracker_Server.Controllers
             IUpdateBugsService = new UpdateBugsService();
             return IUpdateBugsService.ApproveBugs(BugStatus, BugId, User);
         }
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Tester/EditBug")]
         public bool EditBug(BugDto Bug)
         {
             IUpdateBugsService = new UpdateBugsService();
             return IUpdateBugsService.EditBug(Bug);
+        }
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Tester/Tasks")]
+        public List<ProjectDto> Tasks(UserDto User)
+        {
+            IGetProjectsService = new GetProjectsService();
+            return IGetProjectsService.GetTasks(User);
         }
     }
 }
