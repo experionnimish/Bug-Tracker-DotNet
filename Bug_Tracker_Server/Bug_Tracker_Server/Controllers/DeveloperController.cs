@@ -14,6 +14,7 @@ namespace Bug_Tracker_Server.Controllers
         // GET: Developer
         IGetBugsListService IGetBugsListService;
         [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Developer/GetBugsList")]
         public List<BugReportDto> GetBugsList([FromUri] string Type, [FromBody] UserDto User)
         {
             IGetBugsListService = new GetBugsListService();
@@ -21,10 +22,18 @@ namespace Bug_Tracker_Server.Controllers
         }
         IUpdateBugsService IUpdateBugsService;
         [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Developer/UpdateBugStatus")]
         public bool UpdateBugStatus([FromUri] string BugStatus, [FromUri] int BugId, [FromBody] UserDto User)
         {
             IUpdateBugsService = new UpdateBugsService();
             return IUpdateBugsService.ChangeBugStatus(BugStatus, BugId, User);
+        }
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Developer/BugHistory")]
+        public List<BugReportDto> BugHistory([FromUri] string Type, [FromBody] UserDto User)
+        {
+            IGetBugsListService = new GetBugsListService();
+            return IGetBugsListService.GetBugsDeveloperHistory(Type, User);
         }
     }
 }
