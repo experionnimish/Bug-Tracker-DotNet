@@ -117,5 +117,35 @@ namespace Bug_Tracker_Client.Controllers
                 return View();
             }
         }
+        public async Task<ActionResult> RejectedBugsReport(string Type)
+        {
+            if (Type != null)
+            {
+                HttpClient client = new HttpClient();
+                UserDto user = (UserDto)Session["User"];
+                var param = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+                HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+                client.BaseAddress = new Uri("http://localhost:49380/api/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                List<BugReportDto> BugsList = new List<BugReportDto>();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = client.PostAsync(string.Format("Developer/RejectedBugs?Type=" + Type), contentPost).Result;
+                var responses = await response.Content.ReadAsStringAsync();
+                BugsList = JsonConvert.DeserializeObject<List<BugReportDto>>(responses);
+                if (BugsList != null)
+                {
+                    ViewBag.Type = Type;
+                    return View("_BugReport", BugsList);
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return View();
+            }
+        }
     }
 }

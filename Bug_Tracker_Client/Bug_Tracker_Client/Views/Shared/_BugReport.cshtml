@@ -141,7 +141,7 @@
                                     </div>
                                 </div>
                             }
-                            if (ViewBag.Type == "Assigned")
+                            if (ViewBag.Type == "Assigned" || ViewBag.Type == "Reject")
                             {
                                 <div class="col-sm-4">
                                     <label for="status" class="form-control-label">Status</label>
@@ -430,7 +430,7 @@
                 }
             }
         }
-        else if('@ViewBag.Type' == "Assigned") {
+        else if('@ViewBag.Type' == "Assigned" || '@ViewBag.Type' == "Reject") {
             var $stat = $(".stat").find(":selected").val();
             if(!$stat) {
                 alert("Please select status");

@@ -35,5 +35,12 @@ namespace Bug_Tracker_Server.Controllers
             IGetBugsListService = new GetBugsListService();
             return IGetBugsListService.GetBugsDeveloperHistory(Type, User);
         }
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Developer/RejectedBugs")]
+        public List<BugReportDto> RejectedBugs([FromUri] string Type, [FromBody] UserDto User)
+        {
+            IGetBugsListService = new GetBugsListService();
+            return IGetBugsListService.GetBugsDeveloperRejected(Type, User);
+        }
     }
 }
