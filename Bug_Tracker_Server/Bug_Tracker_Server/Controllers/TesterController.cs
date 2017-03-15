@@ -58,7 +58,7 @@ namespace Bug_Tracker_Server.Controllers
         public bool ApproveBugs([FromUri] string BugStatus, [FromUri] int BugId, [FromBody] UserDto User)
         {
             IUpdateBugsService = new UpdateBugsService();
-            return IUpdateBugsService.ApproveBugs(BugStatus, BugId, User);
+            return IUpdateBugsService.ChangeBugStatus(BugStatus, BugId, User);
         }
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("api/Tester/EditBug")]

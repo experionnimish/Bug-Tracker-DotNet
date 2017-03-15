@@ -141,6 +141,20 @@
                                     </div>
                                 </div>
                             }
+                            if (ViewBag.Type == "Assigned")
+                            {
+                                <div class="col-sm-4">
+                                    <label for="status" class="form-control-label">Status</label>
+                                    <div class="stat">
+                                        <select class="form-control" name="status" required>
+                                            <option value="">Select status</option>
+                                            <option value="Resolving">Resolving</option>
+                                            <option value="Review">Review</option>
+                                        </select>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                            }
                         }
                     </div>
                     <div class="row ifReject" style="display: none;">
@@ -414,6 +428,33 @@
                         }
                     });
                 }
+            }
+        }
+        else if('@ViewBag.Type' == "Assigned") {
+            var $stat = $(".stat").find(":selected").val();
+            if(!$stat) {
+                alert("Please select status");
+            }
+            else {
+                var $bug = $('#bug_id').val();         // Retrieves the text within <td>
+                $.ajax({
+                    type: "POST",
+                    url: "/Developer/UpdateBugStatus",
+                    data: { BugStatus : $stat, BugId: $bug },
+                    success: function (data) {
+                        if(data == "True")
+                            alert("Bug status changed successfully!");
+                        else
+                            alert("An error has occured!");
+                        location.reload();
+                    },
+                    failure: function (data) {
+                        alert(data.responseText);
+                    },
+                    error: function (data) {
+                        alert(data.responseText);
+                    }
+                });
             }
         }
     });

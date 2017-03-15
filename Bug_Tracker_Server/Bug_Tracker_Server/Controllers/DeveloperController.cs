@@ -17,7 +17,14 @@ namespace Bug_Tracker_Server.Controllers
         public List<BugReportDto> GetBugsList([FromUri] string Type, [FromBody] UserDto User)
         {
             IGetBugsListService = new GetBugsListService();
-            return IGetBugsListService.GetBugsTester(Type, User);
+            return IGetBugsListService.GetBugsDeveloper(Type, User);
+        }
+        IUpdateBugsService IUpdateBugsService;
+        [System.Web.Http.HttpPost]
+        public bool UpdateBugStatus([FromUri] string BugStatus, [FromUri] int BugId, [FromBody] UserDto User)
+        {
+            IUpdateBugsService = new UpdateBugsService();
+            return IUpdateBugsService.ChangeBugStatus(BugStatus, BugId, User);
         }
     }
 }

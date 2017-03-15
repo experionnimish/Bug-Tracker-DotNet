@@ -1,7 +1,43 @@
-﻿
-@{
-    ViewBag.Title = "BugReports";
+﻿@{
+    ViewBag.Title = "Bug Reports";
 }
+<script src="~/Scripts/togglesearch.js"></script>
+<div class="container">
+    <div class="panel panel-primary resp">
+        <div class="panel-heading">
+            <h3 class="panel-title">@ViewBag.Title</h3>
+            <div class="pull-right">
+                <span class="clickable filter" data-toggle="tooltip" title="Toggle table filter" data-container="body">
+                    <i class="glyphicons glyphicon-user"></i>
+                </span>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="panel-filter">
+                <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Bugs" />
+            </div>
+            <div id="BugsList">
 
-<h2>BugReports</h2>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Developer/GetBugsList",
+            data: { Type: "Assigned" },
+            success: function (data) {
+                $("#BugsList").html(data);
+            },
+            failure: function (data) {
+                alert(data.responseText);
+            },
+            error: function (data) {
+                alert(data.responseText);
+            }
+        });
+    });
+</script>

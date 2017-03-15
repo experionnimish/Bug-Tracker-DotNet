@@ -40,7 +40,7 @@ namespace Bug_Tracker_Server.Data_Services
                 return false;
             }
         }
-        public bool ApproveBugs(string BugStatus, int BugId, UserDto User)
+        public bool ChangeBugStatus(string BugStatus, int BugId, UserDto User)
         {
             try
             {
