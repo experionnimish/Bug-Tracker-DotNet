@@ -50,10 +50,15 @@ namespace Bug_Tracker_Client.Controllers
             else
                 return View("Login");
         }
-        public ActionResult ManageTesters()
+        public async Task<ActionResult> ManageTesters()
         {
             if (IsAuthenticated())
+            {
+                var user = Session["User"];
+                ViewBag.ManageTestersMessage = TempData["Message"];
+                GetProjects((UserDto)user);
                 return View();
+            }
             else
                 return View("Login");
         }
@@ -244,7 +249,6 @@ namespace Bug_Tracker_Client.Controllers
         }
         public async Task<ActionResult> AddTeamMembers(AddTeamDto Member)
         {
-            Member.member_class = 2;
             HttpClient client = new HttpClient();
             var param = Newtonsoft.Json.JsonConvert.SerializeObject(Member);
             HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
@@ -262,11 +266,15 @@ namespace Bug_Tracker_Client.Controllers
             {
                 TempData["Message"] = "FailAdd";
             }
-            return RedirectToAction("ManageDevelopers", "Admin");
+            if(Member.member_class == 2)
+                return RedirectToAction("ManageDevelopers", "Admin");
+            if (Member.member_class == 1)
+                return RedirectToAction("ManageTesters", "Admin");
+            else
+                return View();
         }
         public async Task<ActionResult> RemoveTeamMembers(AddTeamDto Member)
         {
-            Member.member_class = 2;
             HttpClient client = new HttpClient();
             var param = Newtonsoft.Json.JsonConvert.SerializeObject(Member);
             HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
@@ -284,7 +292,12 @@ namespace Bug_Tracker_Client.Controllers
             {
                 TempData["Message"] = "FailRem";
             }
-            return RedirectToAction("ManageDevelopers", "Admin");
+            if (Member.member_class == 2)
+                return RedirectToAction("ManageDevelopers", "Admin");
+            if (Member.member_class == 1)
+                return RedirectToAction("ManageTesters", "Admin");
+            else
+                return View();
         }
     }
 }

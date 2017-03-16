@@ -8,28 +8,28 @@
             @{
                 if (ViewBag.ManageDevelopersMessage != null)
                 {
-                    if (ViewBag.ManageDevelopersMeassage == "SuccessRem")
+                    if (ViewBag.ManageDevelopersMessage == "SuccessRem")
                     {
                         <div class="alert alert-success alert-dismissable fade in">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <strong>Success!</strong>&nbspDeveloper(s) removed from the project team.
                         </div>
                     }
-                    else if (ViewBag.ManageDevelopersMeassage == "FailRem")
+                    else if (ViewBag.ManageDevelopersMessage == "FailRem")
                     {
                         <div class="alert alert-danger alert-dismissable fade in">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <strong>Error!</strong>&nbspOperation failed.
                         </div>
                     }
-                    if (ViewBag.ManageDevelopersMeassage == "SuccessAdd")
+                    if (ViewBag.ManageDevelopersMessage == "SuccessAdd")
                     {
                         <div class="alert alert-success alert-dismissable fade in">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <strong>Success!</strong>&nbspDeveloper(s) added to the project team.
                         </div>
                     }
-                    else if (ViewBag.ManageDevelopersMeassage == "FailAdd")
+                    else if (ViewBag.ManageDevelopersMessage == "FailAdd")
                     {
                         <div class="alert alert-danger alert-dismissable fade in">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -76,6 +76,7 @@
                                         }
                                     }
                                     @Html.DropDownList("project_id", ProjectsAdmin, new { @class = "form-control", onchange = "getDevelopersAdd($(this))", @required = "required" })
+                                    <input type="hidden" name="member_class" value="2" />
                                     <div class="help-block with-errors"></div>
                                 </div>
                             </div>
@@ -115,7 +116,8 @@
                                              });
                                              }
                                         </select>*@
-                                    @Html.DropDownList("projectDeveloper", ProjectsAdmin, new { @class = "form-control", onchange = "getDevelopers($(this))", @required = "required" })
+                                    @Html.DropDownList("project_id", ProjectsAdmin, new { @class = "form-control", onchange = "getDevelopers($(this))", @required = "required" })
+                                    <input type="hidden" name="member_class" value="2" />
                                     <div class="help-block with-errors"></div>
                                 </div>
                             </div>

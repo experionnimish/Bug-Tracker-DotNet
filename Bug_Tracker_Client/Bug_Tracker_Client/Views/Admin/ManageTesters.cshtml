@@ -2,6 +2,207 @@
 @{
     ViewBag.Title = "ManageTesters";
 }
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @{
+                if (ViewBag.ManageTestersMessage != null)
+                {
+                    if (ViewBag.ManageTestersMessage == "SuccessRem")
+                    {
+                        <div class="alert alert-success alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Success!</strong>&nbspTester(s) removed from the project team.
+                        </div>
+                    }
+                    else if (ViewBag.ManageTestersMessage == "FailRem")
+                    {
+                        <div class="alert alert-danger alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Error!</strong>&nbspOperation failed.
+                        </div>
+                    }
+                    if (ViewBag.ManageTestersMessage == "SuccessAdd")
+                    {
+                        <div class="alert alert-success alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Success!</strong>&nbspTester(s) added to the project team.
+                        </div>
+                    }
+                    else if (ViewBag.ManageTestersMessage == "FailAdd")
+                    {
+                        <div class="alert alert-danger alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Error!</strong>&nbspOperation failed.
+                        </div>
+                    }
+                }
+            }
+            <div class="panel panel-primary resp">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add Testers</h3>
+                </div>
+                <div class="panel-body fixed-panel">
+                    <div class="col-md-12">
+                        <div class="col-md-1"><input type="checkbox" name="testers" value="" disabled></div>
+                        <div class="col-md-6"><strong><p>Tester Name</p></strong></div>
+                    </div>
+                    <form class="" action="/Admin/AddTeamMembers" method="post" data-toggle="validator">
+                        <div id="testersAdd">
 
-<h2>ManageTesters</h2>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-11">
+                                <div class="col-sm-3 col-sm-offset-9 form-group">
+                                    @*<select class="form-control" name="project_id" id="project_id" onchange="getTestersAdd($(this))" required>
+                                            <option value="">Select Project</option>
+                                             if(typeof(projects) != 'undefined') {
+                                             projects.forEach(function(item, index) {
+                                            <option value="= item.id "> = item.name  </option>
+                                             });
+                                             }
+                                        </select>*@
+                                    @{
+                                        List<SelectListItem> ProjectsAdmin = new List<SelectListItem>();
+                                        ProjectsAdmin.Add(new SelectListItem
+                                        {
+                                            Text = "Select Project",
+                                            Value = "",
+                                            Selected = true
+                                        });
+                                        foreach (var item in ViewBag.ProjectsAdmin)
+                                        {
+                                            ProjectsAdmin.Add(item);
+                                        }
+                                    }
+                                    @Html.DropDownList("project_id", ProjectsAdmin, new { @class = "form-control", onchange = "getTestersAdd($(this))", @required = "required" })
+                                    <input type="hidden" name="member_class" value="1" />
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-1 form group">
+                                <input type="submit" class="btn btn-md btn-primary checkBtn1" value="Add">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary resp">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Remove Testers</h3>
+                </div>
+                <div class="panel-body fixed-panel">
+                    <div class="col-md-12">
+                        <div class="col-md-1"><input type="checkbox" name="testers" value="" disabled></div>
+                        <div class="col-md-3"><strong><p>Tester Name</p></strong></div>
+                        <div class="col-md-3"><strong><p>Project Name</p></strong></div>
+                    </div>
+                    <form class="" action="/Admin/RemoveTeamMembers" method="post" data-toggle="validator" onsubmit="return confirm('Do you really want to remove the tester(s) from the project?');">
+                        <div id="testersRemove">
 
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-11">
+                                <div class="col-sm-3 col-sm-offset-9 form-group">
+                                    @*<select class="form-control" name="projectTester" id="projectTester" onchange="getTesters($(this))" required>
+                                            <option value="">Select Project</option>
+                                             if(typeof(projects) != 'undefined') {
+                                             projects.forEach(function(item, index) {
+                                            <option value="= item.id "> = item.name  </option>
+                                             });
+                                             }
+                                        </select>*@
+                                    @Html.DropDownList("project_id", ProjectsAdmin, new { @class = "form-control", onchange = "getTesters($(this))", @required = "required" })
+                                    <input type="hidden" name="member_class" value="1" />
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-1 form group">
+                                <input type="submit" class="btn btn-md btn-primary checkBtn2" value="Remove">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getTesters(that) {
+        var $project = that.val();
+        if (!$project) {
+            location.reload();
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetTeamMembers",
+            data: { ProjectId: $project, UserClass: 1 },
+            success: function (data) {
+                data = JSON.parse(data);
+                console.log(data);
+                var replace = "";
+                data.forEach(function (item, index) {
+                    replace += "<div class='col-sm-12'><div class='col-sm-1'><label><input type='checkbox' name='members[]' value= '" + item.user_id + "' ></label></div><div class='col-sm-3'><p>" + item.user_name + "</p></div><div class='col-sm-3'><p>" + item.project_name + "</p><input type='hidden' name='project_id' value='" + item.project_id + "'></div></div>";
+                });
+                console.log(replace);
+                $('#testersRemove').html(replace);
+            },
+            failure: function (data) {
+                alert(data.responseText);
+            },
+            error: function (data) {
+                alert(data.responseText);
+            }
+        });
+    }
+    function getTestersAdd(that) {
+        var $project = that.val();
+        if (!$project) {
+            location.reload();
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetTeamMembersAdd",
+            data: { ProjectId: $project, UserClass: 1 },
+            success: function (data) {
+                data = JSON.parse(data);
+                console.log(data);
+                var replace = "";
+                data.forEach(function (item, index) {
+                    replace += "<div class='col-md-12'><div class='col-md-1'><label><input type='checkbox' name='members[]' value= '" + item.user_id + "' ></label></div><div class='col-md-6'><p>" + item.user_name + "</p></div></div>";
+                });
+                console.log(replace);
+                $('#testersAdd').html(replace);
+            },
+            failure: function (data) {
+                alert(data.responseText);
+            },
+            error: function (data) {
+                alert(data.responseText);
+            }
+        });
+    }
+    $('.checkBtn1').click(function () {
+        checked = $('#testersAdd').find("input[type=checkbox]:checked").length;
+
+        if (!checked) {
+            alert("You must check at least one checkbox.");
+            return false;
+        }
+
+    });
+    $('.checkBtn2').click(function () {
+        checked = $('#testersRemove').find("input[type=checkbox]:checked").length;
+
+        if (!checked) {
+            alert("You must check at least one checkbox.");
+            return false;
+        }
+
+    });
+</script>
