@@ -62,6 +62,7 @@ namespace Bug_Tracker_Client.Controllers
             if (IsAuthenticated())
             {
                 var user = Session["User"];
+                ViewBag.ManageDevelopersMessage = TempData["Message"];
                 GetProjects((UserDto)user);
                 return View();
             }
@@ -255,11 +256,11 @@ namespace Bug_Tracker_Client.Controllers
             string Status = (JsonConvert.DeserializeObject<string>(responses));
             if(Status == "True")
             {
-                ViewBag.ManageDevelopersMessage = "SuccessAdd";
+                TempData["Message"] = "SuccessAdd";
             }
             else
             {
-                ViewBag.ManageDevelopersMeassage = "FailAdd";
+                TempData["Message"] = "FailAdd";
             }
             return RedirectToAction("ManageDevelopers", "Admin");
         }
@@ -277,11 +278,11 @@ namespace Bug_Tracker_Client.Controllers
             string Status = (JsonConvert.DeserializeObject<string>(responses));
             if (Status == "True")
             {
-                ViewBag.ManageDevelopersMessage = "SuccessRem";
+                TempData["Message"] = "SuccessRem";
             }
             else
             {
-                ViewBag.ManageDevelopersMeassage = "FailRem";
+                TempData["Message"] = "FailRem";
             }
             return RedirectToAction("ManageDevelopers", "Admin");
         }
