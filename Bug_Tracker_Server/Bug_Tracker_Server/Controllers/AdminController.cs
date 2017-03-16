@@ -15,6 +15,7 @@ namespace Bug_Tracker_Server.Controllers
         // GET: Admin
         IGetBugsListService IGetBugsListService;
         [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Admin/GetBugsList")]
         public List<BugReportDto> GetBugsList([FromUri] string Type, [FromBody] UserDto User)
         {
             IGetBugsListService = new GetBugsListService();
@@ -35,20 +36,37 @@ namespace Bug_Tracker_Server.Controllers
             IGetTeamMembersService = new GetTeamMembersService();
             return IGetTeamMembersService.GetTeamMembersAdd(ProjectId, UserClass, User);
         }
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Admin/AddTeamMembers")]
+        public bool AddTeamMembers(AddTeamDto Member)
+        {
+            IGetTeamMembersService = new GetTeamMembersService();
+            return IGetTeamMembersService.AddTeamMembers(Member);
+        }
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Admin/RemoveTeamMembers")]
+        public bool RemoveTeamMembers(AddTeamDto Member)
+        {
+            IGetTeamMembersService = new GetTeamMembersService();
+            return IGetTeamMembersService.RemoveTeamMembers(Member);
+        }
         IUpdateBugsService IUpdateBugsService;
         [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Admin/AssignDeveloper")]
         public bool AssignDeveloper([FromUri] int DeveloperId, [FromUri] int BugId, [FromBody] UserDto User)
         {
             IUpdateBugsService = new UpdateBugsService();
             return IUpdateBugsService.AssignDeveloper(DeveloperId, BugId, User);
         }
         [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Admin/RejectBugs")]
         public bool RejectBugs([FromUri] string RejectReason, [FromUri] string BugStatus, [FromUri] int BugId, [FromBody] UserDto User)
         {
             IUpdateBugsService = new UpdateBugsService();
             return IUpdateBugsService.RejectBugs(RejectReason, BugStatus, BugId, User);
         }
         [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Admin/ApproveBugs")]
         public bool ApproveBugs([FromUri] string BugStatus, [FromUri] int BugId, [FromBody] UserDto User)
         {
             IUpdateBugsService = new UpdateBugsService();
@@ -56,6 +74,7 @@ namespace Bug_Tracker_Server.Controllers
         }
         IGetProjectsService IGetProjectsService;
         [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Admin/GetProjects")]
         public List<SelectListItem> GetProjects(user userObj)
         {
             IGetProjectsService = new GetProjectsService();

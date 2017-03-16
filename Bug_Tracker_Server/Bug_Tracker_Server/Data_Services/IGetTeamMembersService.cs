@@ -11,5 +11,7 @@ namespace Bug_Tracker_Server.Data_Services
     {
         List<MemberDto> GetTeamMembers(int ProjectId, int UserClass, UserDto User);
         List<MemberDto> GetTeamMembersAdd(int ProjectId, int UserClass, UserDto User);
+        bool AddTeamMembers(AddTeamDto Member);
+        bool RemoveTeamMembers(AddTeamDto Member);
     }
 }

@@ -241,5 +241,49 @@ namespace Bug_Tracker_Client.Controllers
                 ViewBag.ProjectsAdmin = null;
             }
         }
+        public async Task<ActionResult> AddTeamMembers(AddTeamDto Member)
+        {
+            Member.member_class = 2;
+            HttpClient client = new HttpClient();
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(Member);
+            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+            client.BaseAddress = new Uri("http://localhost:49380/api/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(string.Format("Admin/AddTeamMembers"), contentPost).Result;
+            var responses = await response.Content.ReadAsStringAsync();
+            string Status = (JsonConvert.DeserializeObject<string>(responses));
+            if(Status == "True")
+            {
+                ViewBag.ManageDevelopersMessage = "SuccessAdd";
+            }
+            else
+            {
+                ViewBag.ManageDevelopersMeassage = "FailAdd";
+            }
+            return RedirectToAction("ManageDevelopers", "Admin");
+        }
+        public async Task<ActionResult> RemoveTeamMembers(AddTeamDto Member)
+        {
+            Member.member_class = 2;
+            HttpClient client = new HttpClient();
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(Member);
+            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+            client.BaseAddress = new Uri("http://localhost:49380/api/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(string.Format("Admin/RemoveTeamMembers"), contentPost).Result;
+            var responses = await response.Content.ReadAsStringAsync();
+            string Status = (JsonConvert.DeserializeObject<string>(responses));
+            if (Status == "True")
+            {
+                ViewBag.ManageDevelopersMessage = "SuccessRem";
+            }
+            else
+            {
+                ViewBag.ManageDevelopersMeassage = "FailRem";
+            }
+            return RedirectToAction("ManageDevelopers", "Admin");
+        }
     }
 }

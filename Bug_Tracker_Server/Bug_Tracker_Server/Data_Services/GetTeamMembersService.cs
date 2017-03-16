@@ -1,4 +1,5 @@
 ﻿using Bug_Tracker_Server.Data;
+using Bug_Tracker_Server.Mapping;
 using BugTrackerDTOs;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,57 @@ namespace Bug_Tracker_Server.Data_Services
                 Devs.Add(Dev);
             }
             return (Devs);
+        }
+        public bool AddTeamMembers(AddTeamDto Member)
+        {
+            try
+            {
+                ProjectTeamDto Team;
+                List<ProjectTeamDto> TeamList = new List<ProjectTeamDto>();
+                foreach (var item in Member.members)
+                {
+                    Team = new ProjectTeamDto();
+                    Team.team_user_id = item;
+                    Team.team_project_id = Member.project_id;
+                    TeamList.Add(Team);
+                }
+                foreach (var item in TeamList)
+                {
+                    entities.project_team.Add(ProjectTeamEntityDto.ToEntity(item));
+                    entities.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool RemoveTeamMembers(AddTeamDto Member)
+        {
+            try
+            {
+                ProjectTeamDto Team;
+                List<ProjectTeamDto> TeamList = new List<ProjectTeamDto>();
+                foreach (var item in Member.members)
+                {
+                    Team = new ProjectTeamDto();
+                    Team.team_user_id = item;
+                    Team.team_project_id = Member.project_id;
+                    TeamList.Add(Team);
+                }
+                foreach (var item in TeamList)
+                {
+                    var y = entities.project_team.Where(x => x.team_user_id == item.team_user_id && x.team_project_id == item.team_project_id).FirstOrDefault();
+                    entities.project_team.Remove(y);
+                    entities.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
