@@ -24,6 +24,18 @@ namespace Bug_Tracker_Server.Data_Services
                           }).ToList();
             return query;
         }
+        public List<SelectListItem> GetProjectsAdmin(user userObj)
+        {
+            var query = (from us in entities.users
+                         join pj in entities.projects on us.user_id equals pj.project_manager_id
+                         where us.user_id == userObj.user_id && pj.project_status == "Open"
+                         select new SelectListItem
+                         {
+                             Value = pj.project_id.ToString(),
+                             Text = pj.project_name
+                         }).ToList();
+            return query;
+        }
         public List<ProjectDto> GetTasks(UserDto User)
         {
             ProjectDto Project;

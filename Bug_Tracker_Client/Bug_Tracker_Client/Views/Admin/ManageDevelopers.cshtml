@@ -2,6 +2,178 @@
 @{
     ViewBag.Title = "ManageDevelopers";
 }
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <% if(typeof(msg) != 'undefined') { %>
+            <%if(msg == 'successRem') {%>
+            <div class="alert alert-success alert-dismissable fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong>&nbspDeveloper(s) removed from the project team.
+            </div>
+            <% } else if(msg == 'failRem') {%>
+            <div class="alert alert-danger alert-dismissable fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Error!</strong>&nbspOperation failed.
+            </div>
+            <% } %>
+            <%if(msg == 'successAdd') {%>
+            <div class="alert alert-success alert-dismissable fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong>&nbspDeveloper(s) added to the project team.
+            </div>
+            <% } else if(msg == 'failAdd') {%>
+            <div class="alert alert-danger alert-dismissable fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Error!</strong>&nbspOperation failed.
+            </div>
+            <% } %>
+            <% } %>
+            <div class="panel panel-primary resp">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add Developers</h3>
+                </div>
+                <div class="panel-body fixed-panel">
+                    <div class="col-md-12">
+                        <div class="col-md-1"><input type="checkbox" name="developers" value="" disabled></div>
+                        <div class="col-md-6"><strong><p>Developer Name</p></strong></div>
+                    </div>
+                    <form class="" action="/admin/manageProjectTeam/manageDevelopers/addDevelopers" method="post" data-toggle="validator">
+                        <div id="developersAdd">
+                            
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-11">
+                                <div class="col-sm-3 col-sm-offset-9 form-group">
+                                    @*<select class="form-control" name="project_id" id="project_id" onchange="getDevelopersAdd($(this))" required>
+                                        <option value="">Select Project</option>
+                                        <% if(typeof(projects) != 'undefined') { %>
+                                        <% projects.forEach(function(item, index) { %>
+                                        <option value="<%= item.id %>"> <%= item.name %> </option>
+                                        <% }); %>
+                                        <% } %>
+                                    </select>*@
+                                    @{
+                                        List<SelectListItem> ProjectsAdmin = new List<SelectListItem>();
+                                        ProjectsAdmin.Add(new SelectListItem
+                                        {
+                                            Text = "Select Project",
+                                            Value = "",
+                                            Selected = true
+                                        });
+                                        foreach (var item in ViewBag.ProjectsAdmin)
+                                        {
+                                            ProjectsAdmin.Add(item);
+                                        }
+                                    }
+                                    @Html.DropDownList("project_id", ProjectsAdmin, new { @class = "form-control", onchange = "getDevelopersAdd($(this))", @required = "required" })
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-1 form group">
+                                <input type="submit" class="btn btn-md btn-primary checkBtn1" value="Add">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary resp">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Remove Developers</h3>
+                </div>
+                <div class="panel-body fixed-panel">
+                    <div class="col-md-12">
+                        <div class="col-md-1"><input type="checkbox" name="developers" value="" disabled></div>
+                        <div class="col-md-3"><strong><p>Developer Name</p></strong></div>
+                        <div class="col-md-3"><strong><p>Project Name</p></strong></div>
+                    </div>
+                    <form class="" action="/admin/manageProjectTeam/manageDevelopers/removeDevelopers" method="post" data-toggle="validator" onsubmit="return confirm('Do you really want to remove the developer(s) from the project?');">
+                        <div id="developersRemove">
+                            
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="col-sm-11">
+                                <div class="col-sm-3 col-sm-offset-9 form-group">
+                                    @*<select class="form-control" name="projectDeveloper" id="projectDeveloper" onchange="getDevelopers($(this))" required>
+                                        <option value="">Select Project</option>
+                                        <% if(typeof(projects) != 'undefined') { %>
+                                        <% projects.forEach(function(item, index) { %>
+                                        <option value="<%= item.id %>"> <%= item.name %> </option>
+                                        <% }); %>
+                                        <% } %>
+                                    </select>*@
+                                    @Html.DropDownList("projectDeveloper", ProjectsAdmin, new { @class = "form-control", onchange = "getDevelopers($(this))", @required = "required" })
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-1 form group">
+                                <input type="submit" class="btn btn-md btn-primary checkBtn2" value="Remove">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h2>ManageDevelopers</h2>
-
+<script>
+    function getDevelopers(that) {
+        var $project = that.val();
+        if (!$project) {
+            location.reload();
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetTeamMembers",
+            data: { ProjectId: $project, UserClass: 2 },
+            success: function (data) {
+                data = JSON.parse(data);
+                console.log(data);
+                var replace = "";
+                data.forEach(function (item, index) {
+                    replace += "<div class='col-sm-12'><div class='col-sm-1'><label><input type='checkbox' name='developers[]' value= '" + item.user_id + "' ></label></div><div class='col-sm-3'><p>" + item.user_name + "</p></div><div class='col-sm-3'><p>" + item.project_name + "</p><input type='hidden' name='project_id' value='" + item.project_id + "'></div></div>";
+                });
+                console.log(replace);
+                $('#developersRemove').html(replace);
+            },
+            failure: function (data) {
+                alert(data.responseText);
+            },
+            error: function (data) {
+                alert(data.responseText);
+            }
+        });
+    }
+    function getDevelopersAdd(that) {
+        var $project = that.val();
+        if (!$project) {
+            location.reload();
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Admin/GetTeamMembersAdd",
+            data: { ProjectId: $project, UserClass: 2 },
+            success: function (data) {
+                data = JSON.parse(data);
+                console.log(data);
+                var replace = "";
+                data.forEach(function (item, index) {
+                    replace += "<div class='col-md-12'><div class='col-md-1'><label><input type='checkbox' name='developers[]' value= '" + item.user_id + "' ></label></div><div class='col-md-6'><p>" + item.user_name + "</p></div></div>";
+                });
+                console.log(replace);
+                $('#developersAdd').html(replace);
+            },
+            failure: function (data) {
+                alert(data.responseText);
+            },
+            error: function (data) {
+                alert(data.responseText);
+            }
+        });
+    }
+</script>

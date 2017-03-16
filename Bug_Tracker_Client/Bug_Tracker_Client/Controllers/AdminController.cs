@@ -57,10 +57,14 @@ namespace Bug_Tracker_Client.Controllers
             else
                 return View("Login");
         }
-        public ActionResult ManageDevelopers()
+        public async Task<ActionResult> ManageDevelopers()
         {
             if (IsAuthenticated())
+            {
+                var user = Session["User"];
+                GetProjects((UserDto)user);
                 return View();
+            }
             else
                 return View("Login");
         }
@@ -131,12 +135,39 @@ namespace Bug_Tracker_Client.Controllers
             HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
             client.BaseAddress = new Uri("http://localhost:49380/api/");
             client.DefaultRequestHeaders.Accept.Clear();
-            List<UserDto> MemberList = new List<UserDto>();
+            List<MemberDto> MemberList = new List<MemberDto>();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var response = client.PostAsync(string.Format("Admin/GetTeamMembers?ProjectId=" + ProjectId +"&UserClass=" + UserClass), contentPost).Result;
             var responses = await response.Content.ReadAsStringAsync();
-            MemberList = JsonConvert.DeserializeObject<List<UserDto>>(responses);
-            var MyListArray = MemberList.Cast<UserDto>().ToArray();
+            MemberList = JsonConvert.DeserializeObject<List<MemberDto>>(responses);
+            var MyListArray = MemberList.Cast<MemberDto>().ToArray();
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            var JSArray = serializer.Serialize(MyListArray);
+            //System.Web.Script.Serialization.JavaScriptSerializer oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            if (MemberList != null)
+            {
+                //string MemberString = oSerializer.Serialize(MemberList);
+                return JSArray;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public async Task<string> GetTeamMembersAdd(int ProjectId, int UserClass)
+        {
+            HttpClient client = new HttpClient();
+            UserDto user = (UserDto)Session["User"];
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+            client.BaseAddress = new Uri("http://localhost:49380/api/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            List<MemberDto> MemberList = new List<MemberDto>();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(string.Format("Admin/GetTeamMembersAdd?ProjectId=" + ProjectId + "&UserClass=" + UserClass), contentPost).Result;
+            var responses = await response.Content.ReadAsStringAsync();
+            MemberList = JsonConvert.DeserializeObject<List<MemberDto>>(responses);
+            var MyListArray = MemberList.Cast<MemberDto>().ToArray();
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             var JSArray = serializer.Serialize(MyListArray);
             //System.Web.Script.Serialization.JavaScriptSerializer oSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
@@ -188,6 +219,27 @@ namespace Bug_Tracker_Client.Controllers
             var response = client.PostAsync(string.Format("Admin/ApproveBugs?BugStatus=" + BugStatus + "&BugId=" + BugId), contentPost).Result;
             var responses = await response.Content.ReadAsStringAsync();
             return (JsonConvert.DeserializeObject<bool>(responses));
+        }
+        public async void GetProjects(UserDto userObj)
+        {
+            HttpClient client = new HttpClient();
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(userObj);
+            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+            client.BaseAddress = new Uri("http://localhost:49380/api/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            List<SelectListItem> ProjectsList = new List<SelectListItem>();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(string.Format("Admin/GetProjects"), contentPost).Result;
+            var responses = await response.Content.ReadAsStringAsync();
+            ProjectsList = JsonConvert.DeserializeObject<List<SelectListItem>>(responses);
+            if (ProjectsList != null)
+            {
+                ViewBag.ProjectsAdmin = ProjectsList;
+            }
+            else
+            {
+                ViewBag.ProjectsAdmin = null;
+            }
         }
     }
 }
