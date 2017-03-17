@@ -15,10 +15,14 @@ namespace Bug_Tracker_Client.Controllers
     public class AdminController : Controller
     {
         // GET: Admin
-        public ActionResult Overview()
+        public async Task<ActionResult> Overview()
         {
             if (IsAuthenticated())
+            {
+                var user = Session["User"];
+                GetProjects((UserDto)user);
                 return View();
+            }
             else
                 return View("Login");
         }
@@ -74,10 +78,15 @@ namespace Bug_Tracker_Client.Controllers
             else
                 return View("Login");
         }
-        public ActionResult ManageProjects()
+        public async Task<ActionResult> ManageProjects()
         {
             if (IsAuthenticated())
+            {
+                var user = Session["User"];
+                GetProjects((UserDto)user);
+                ViewBag.ManageProjectsMessage = TempData["Message"];
                 return View();
+            }
             else
                 return View("Login");
         }
@@ -143,7 +152,7 @@ namespace Bug_Tracker_Client.Controllers
             client.DefaultRequestHeaders.Accept.Clear();
             List<MemberDto> MemberList = new List<MemberDto>();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var response = client.PostAsync(string.Format("Admin/GetTeamMembers?ProjectId=" + ProjectId +"&UserClass=" + UserClass), contentPost).Result;
+            var response = client.PostAsync(string.Format("Admin/GetTeamMembers?ProjectId=" + ProjectId + "&UserClass=" + UserClass), contentPost).Result;
             var responses = await response.Content.ReadAsStringAsync();
             MemberList = JsonConvert.DeserializeObject<List<MemberDto>>(responses);
             var MyListArray = MemberList.Cast<MemberDto>().ToArray();
@@ -189,16 +198,16 @@ namespace Bug_Tracker_Client.Controllers
         }
         public async Task<bool> AssignDeveloper(int DeveloperId, int BugId)
         {
-                HttpClient client = new HttpClient();
-                UserDto user = (UserDto)Session["User"];
-                var param = Newtonsoft.Json.JsonConvert.SerializeObject(user);
-                HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
-                client.BaseAddress = new Uri("http://localhost:49380/api/");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = client.PostAsync(string.Format("Admin/AssignDeveloper?DeveloperId=" + DeveloperId + "&BugId=" + BugId), contentPost).Result;
-                var responses = await response.Content.ReadAsStringAsync();
-                return (JsonConvert.DeserializeObject<bool>(responses));
+            HttpClient client = new HttpClient();
+            UserDto user = (UserDto)Session["User"];
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(user);
+            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+            client.BaseAddress = new Uri("http://localhost:49380/api/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(string.Format("Admin/AssignDeveloper?DeveloperId=" + DeveloperId + "&BugId=" + BugId), contentPost).Result;
+            var responses = await response.Content.ReadAsStringAsync();
+            return (JsonConvert.DeserializeObject<bool>(responses));
         }
         public async Task<bool> RejectBugs(string RejectReason, string BugStatus, int BugId)
         {
@@ -258,7 +267,7 @@ namespace Bug_Tracker_Client.Controllers
             var response = client.PostAsync(string.Format("Admin/AddTeamMembers"), contentPost).Result;
             var responses = await response.Content.ReadAsStringAsync();
             string Status = (JsonConvert.DeserializeObject<string>(responses));
-            if(Status == "True")
+            if (Status == "True")
             {
                 TempData["Message"] = "SuccessAdd";
             }
@@ -266,7 +275,7 @@ namespace Bug_Tracker_Client.Controllers
             {
                 TempData["Message"] = "FailAdd";
             }
-            if(Member.member_class == 2)
+            if (Member.member_class == 2)
                 return RedirectToAction("ManageDevelopers", "Admin");
             if (Member.member_class == 1)
                 return RedirectToAction("ManageTesters", "Admin");
@@ -298,6 +307,73 @@ namespace Bug_Tracker_Client.Controllers
                 return RedirectToAction("ManageTesters", "Admin");
             else
                 return View();
+        }
+        public async Task<ActionResult> AddProject(ProjectDto Project)
+        {
+            HttpClient client = new HttpClient();
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(Project);
+            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+            client.BaseAddress = new Uri("http://localhost:49380/api/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(string.Format("Admin/AddProject"), contentPost).Result;
+            var responses = await response.Content.ReadAsStringAsync();
+            string Status = (JsonConvert.DeserializeObject<string>(responses));
+            if (Status == "True")
+            {
+                TempData["Message"] = "SuccessAdd";
+            }
+            else
+            {
+                TempData["Message"] = "FailAdd";
+            }
+            return RedirectToAction("ManageProjects", "Admin");
+        }
+        public async Task<ActionResult> RemoveProject(int[] project_id)
+        {
+            HttpClient client = new HttpClient();
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(project_id);
+            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+            client.BaseAddress = new Uri("http://localhost:49380/api/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(string.Format("Admin/RemoveProject"), contentPost).Result;
+            var responses = await response.Content.ReadAsStringAsync();
+            string Status = (JsonConvert.DeserializeObject<string>(responses));
+            if (Status == "True")
+            {
+                TempData["Message"] = "SuccessRem";
+            }
+            else
+            {
+                TempData["Message"] = "FailRem";
+            }
+            return RedirectToAction("ManageProjects", "Admin");
+        }
+        public async Task<string> GetBugsProject(int ProjectId)
+        {
+            HttpClient client = new HttpClient();
+            ProjectDto Project = new ProjectDto();
+            Project.project_id = ProjectId;
+            var param = Newtonsoft.Json.JsonConvert.SerializeObject(Project);
+            HttpContent contentPost = new StringContent(param, Encoding.UTF8, "application/json");
+            client.BaseAddress = new Uri("http://localhost:49380/api/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = client.PostAsync(string.Format("Admin/GetBugsProject"), contentPost).Result;
+            var responses = await response.Content.ReadAsStringAsync();
+            List<BugDto> BugList = (JsonConvert.DeserializeObject<List<BugDto>>(responses));
+            if(BugList != null)
+            {
+                var MyListArray = BugList.Cast<BugDto>().ToArray();
+                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                var JSArray = serializer.Serialize(MyListArray);
+                return JSArray;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

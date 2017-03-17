@@ -80,5 +80,26 @@ namespace Bug_Tracker_Server.Controllers
             IGetProjectsService = new GetProjectsService();
             return IGetProjectsService.GetProjectsAdmin(userObj);
         }
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Admin/AddProject")]
+        public bool AddProject(ProjectDto Project)
+        {
+            IGetProjectsService = new GetProjectsService();
+            return IGetProjectsService.AddProject(Project);
+        }
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Admin/RemoveProject")]
+        public bool RemoveProject(int[] ProjectId)
+        {
+            IGetProjectsService = new GetProjectsService();
+            return IGetProjectsService.RemoveProject(ProjectId);
+        }
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Admin/GetBugsProject")]
+        public List<BugDto> GetBugsProject(ProjectDto Project)
+        {
+            IGetBugsListService = new GetBugsListService();
+            return IGetBugsListService.GetBugsProject(Project.project_id);
+        }
     }
 }

@@ -15,5 +15,6 @@ namespace Bug_Tracker_Server.Data_Services
         List<BugReportDto> GetBugsDeveloper(string Type, UserDto User);
         List<BugReportDto> GetBugsDeveloperHistory(string Type, UserDto User);
         List<BugReportDto> GetBugsDeveloperRejected(string Type, UserDto User);
+        List<BugDto> GetBugsProject(int ProjectId);
     }
 }

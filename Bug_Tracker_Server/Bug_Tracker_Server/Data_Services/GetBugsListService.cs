@@ -1,8 +1,10 @@
 ﻿using Bug_Tracker_Server.Data;
+using Bug_Tracker_Server.Mapping;
 using BugTrackerDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 
 namespace Bug_Tracker_Server.Data_Services
@@ -292,6 +294,26 @@ namespace Bug_Tracker_Server.Data_Services
                 i++;
             }
             return BugDetailsList;
+        }
+        public List<BugDto> GetBugsProject(int ProjectId)
+        {
+            BugDto Bug;
+            List<BugDto> BugList = new List<BugDto>();
+            var Query = entities.bugs.Where(x => x.bug_project_id == ProjectId).ToList();
+            foreach(var item in Query)
+            {
+                Bug = new BugDto();
+                foreach (PropertyInfo propertyInfo in typeof(BugDto).GetProperties())
+                {
+                    if (propertyInfo.CanRead)
+                    {
+                        var Value = propertyInfo.GetValue(BugEntityDto.ToDto(item), null);
+                        propertyInfo.SetValue(Bug, Value, null);
+                    }
+                }
+                BugList.Add(Bug);
+            }
+            return BugList;
         }
     }
 }

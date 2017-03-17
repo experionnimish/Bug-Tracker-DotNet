@@ -1,4 +1,5 @@
 ﻿using Bug_Tracker_Server.Data;
+using Bug_Tracker_Server.Mapping;
 using BugTrackerDTOs;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,35 @@ namespace Bug_Tracker_Server.Data_Services
                 ProjectList.Add(Project);
             }
             return ProjectList;
+        }
+        public bool AddProject(ProjectDto Project)
+        {
+            try
+            {
+                entities.projects.Add(ProjectEntityDto.ToEntity(Project));
+                entities.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public bool RemoveProject(int[] project_id)
+        {
+            try
+            {
+               foreach(var item in project_id)
+                {
+                    var ProjectRemove = entities.projects.Where(x => x.project_id == item).FirstOrDefault().project_status = "Closed";
+                }
+                entities.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

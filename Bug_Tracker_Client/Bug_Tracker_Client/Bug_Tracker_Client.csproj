@@ -221,8 +221,11 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Bugtracker-logo.png" />
     <Content Include="Content\computer-technology-concept-business-background-abstract-image34259408.jpg" />
+    <Content Include="Content\easypiechart.css" />
+    <Content Include="Content\jquery.dataTables.min.css" />
     <Content Include="Content\NavBar.css" />
     <Content Include="Content\noscreen21.png" />
+    <Content Include="Content\overview.css" />
     <Content Include="Content\secure.jpg" />
     <Content Include="Content\Website-Design-Background-1.jpg" />
     <Content Include="favicon.ico" />
@@ -245,6 +248,7 @@
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\easypiechart.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -252,6 +256,8 @@
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
+    <Content Include="Scripts\jquery.easypiechart.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />

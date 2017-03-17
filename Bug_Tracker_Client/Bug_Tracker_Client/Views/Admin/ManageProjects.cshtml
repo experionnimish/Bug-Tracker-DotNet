@@ -1,7 +1,125 @@
-﻿
+﻿@using BugTrackerDTOs;
 @{
-    ViewBag.Title = "ManageProjects";
+    ViewBag.Title = "Manage Projects";
 }
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @{ 
+                UserDto User = (UserDto)Session["User"];
+            }
+            @{
+                if (ViewBag.ManageProjectsMessage != null)
+                {
+                    if (ViewBag.ManageProjectsMessage == "SuccessRem")
+                    {
+                        <div class="alert alert-success alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Success!</strong>&nbspProjects(s) removed.
+                        </div>
+                    }
+                    else if (ViewBag.ManageProjectsMessage == "FailRem")
+                    {
+                        <div class="alert alert-danger alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Error!</strong>&nbspFailed to remove Project(s).
+                        </div>
+                    }
+                    if (ViewBag.ManageProjectsMessage == "SuccessAdd")
+                    {
+                        <div class="alert alert-success alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Success!</strong>&nbspNew Project added.
+                        </div>
+                    }
+                    else if (ViewBag.ManageProjectsMessage == "FailAdd")
+                    {
+                        <div class="alert alert-danger alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Error!</strong>&nbspFailed to add new project.
+                        </div>
+                    }
+                }
+            }
+            <div class="panel panel-primary resp">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Add Projects</h3>
+                </div>
+                <div class="panel-body fixed-panel resp">
+                    <div class="col-sm-12">
+                        <form class="" action="/Admin/AddProject" method="post" data-toggle="validator">
 
-<h2>ManageProjects</h2>
+                            <div class="col-sm-6 form-group">
+                                <input type="text" name="project_name" placeholder="Project Name" class="form-control" pattern="^[a-zA-Z0-9\s]+$" required>
+                                <input type="hidden" name="project_manager_id" value="@User.user_id">
+                                <input type="hidden" name="project_status" value="Open">
+                                <div class="help-block with-errors">Alphanumeric characters only</div>
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="submit" class="btn btn-md btn-primary" value="Submit">
+                            </div>
 
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary resp">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Remove Projects</h3>
+                </div>
+                <div class="panel-body fixed-panel">
+                    <div class="col-md-12">
+                        <div class="col-md-1"><input type="checkbox" name="developers" value="" disabled></div>
+                        <div class="col-md-6"><strong><p>Project Name</p></strong></div>
+                    </div>
+                    <form class="" action="/Admin/RemoveProject" method="post" onsubmit="return confirm('Do you really want to close the project?');">
+
+                        @{
+                            if (ViewBag.ProjectsAdmin != null)
+                            {
+                                foreach (var item in ViewBag.ProjectsAdmin)
+                                {
+                                    <div class="col-md-12">
+                                        <div class="col-md-1">
+                                            <label>
+                                                <input type="checkbox" name="project_id[]" value="@item.Value" >
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p>@item.Text</p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+
+                        <input type="submit" class="btn btn-md btn-primary pull-right checkBtn" value="Remove">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Admin/GetBugsList",
+            data: { Type: "Open" },
+            success: function (data) {
+                $("#BugsList").html(data);
+            },
+            failure: function (data) {
+                alert(data.responseText);
+            },
+            error: function (data) {
+                alert(data.responseText);
+            }
+        });
+    });
+    </script>

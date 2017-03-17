@@ -14,5 +14,7 @@ namespace Bug_Tracker_Server.Data_Services
         List<SelectListItem> GetProjects(user userObj);
         List<ProjectDto> GetTasks(UserDto User);
         List<SelectListItem> GetProjectsAdmin(user userObj);
+        bool AddProject(ProjectDto Project);
+        bool RemoveProject(int[] ProjectId);
     }
 }

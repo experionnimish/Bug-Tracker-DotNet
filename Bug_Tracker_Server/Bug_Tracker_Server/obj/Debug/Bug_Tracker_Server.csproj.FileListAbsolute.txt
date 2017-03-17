@@ -87,6 +87,5 @@ E:\Bug Tracker\Bug_Tracker_Server\Bug_Tracker_Server\bin\Microsoft.Owin.Security
 E:\Bug Tracker\Bug_Tracker_Server\Bug_Tracker_Server\bin\Microsoft.Owin.Security.Twitter.xml
 E:\Bug Tracker\Bug_Tracker_Server\Bug_Tracker_Server\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 E:\Bug Tracker\Bug_Tracker_Server\Bug_Tracker_Server\bin\System.Web.Http.Owin.xml
-E:\Bug Tracker\Bug_Tracker_Server\Bug_Tracker_Server\obj\Debug\Bug_Tracker_Server.csprojResolveAssemblyReference.cache
 E:\Bug Tracker\Bug_Tracker_Server\Bug_Tracker_Server\obj\Debug\Bug_Tracker_Server.dll
 E:\Bug Tracker\Bug_Tracker_Server\Bug_Tracker_Server\obj\Debug\Bug_Tracker_Server.pdb
