@@ -2,4 +2,3 @@ E:\Bug Tracker\Bug_Tracker_Server\BugTrackerDTOs\bin\Debug\BugTrackerDTOs.dll
 E:\Bug Tracker\Bug_Tracker_Server\BugTrackerDTOs\bin\Debug\BugTrackerDTOs.pdb
 E:\Bug Tracker\Bug_Tracker_Server\BugTrackerDTOs\obj\Debug\BugTrackerDTOs.dll
 E:\Bug Tracker\Bug_Tracker_Server\BugTrackerDTOs\obj\Debug\BugTrackerDTOs.pdb
-E:\Bug Tracker\Bug_Tracker_Server\BugTrackerDTOs\obj\Debug\BugTrackerDTOs.csprojResolveAssemblyReference.cache
