@@ -477,7 +477,7 @@
                 console.log(bugs);
                 bugs.forEach(function (item, index) {
                     total++;
-                    switch (item.status) {
+                    switch (item.bug_status) {
                         case "Open": open++; break;
                         case "Assigned": assigned++; break;
                         case "Review": review++; break;
@@ -487,13 +487,13 @@
                         case "Closed": closed++; break;
                         default: break;
                     }
-                    switch (item.severity) {
+                    switch (item.bug_severity) {
                         case "Major": major++; break;
                         case "Critical": critical++; break;
                         case "Minor": minor++; break;
                         default: break;
                     }
-                    switch (item.priority) {
+                    switch (item.bug_priority) {
                         case "High": high++; break;
                         case "Medium": medium++; break;
                         case "Low": low++; break;
